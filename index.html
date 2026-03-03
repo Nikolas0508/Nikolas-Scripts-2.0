@@ -20,14 +20,14 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
 html, body{height:100%;overflow:hidden;}
 
-/* FUNDO LOGIN E PAINEL */
-body{
-    background: linear-gradient(160deg,#000000 0%,#03130c 35%,#052017 60%,#000000 100%);
-    position:relative;
-    height:100vh;
+/* ================= FUNDO DE NUVENS VERDE ================= */
+body {
+    background: url('https://wallpapers.com/images/high/clouds-4k-q7jel2uakh1j5va3.webp') no-repeat center center fixed;
+    background-size: cover;
+    position: relative;
+    height: 100vh;
 }
-
-/* Glow verde central */
+/* Glow verde sobre as nuvens */
 body::after{
     content:"";
     position:absolute;
@@ -191,7 +191,7 @@ button:hover{
     border-bottom:1px solid rgba(0,255,136,0.15);
     display:flex;
     align-items:center;
-    justify-content:space-between;
+    justify-content:flex-start;
     padding:0 30px;
     z-index:10;
 }
@@ -199,10 +199,6 @@ button:hover{
     font-weight:700;
     font-size:20px;
     color:#00ff88;
-}
-.top-right span{
-    color:#00ff88;
-    font-weight:600;
 }
 
 /* Conteúdo */
@@ -275,7 +271,6 @@ button:hover{
   <div class="content">
     <!-- Início -->
     <div id="inicio">
-      <div class="title">Bem-vindo, <span class="badge" id="userDisplay"></span></div>
       <div class="card">
         <p><b>NOVIDADES</b></p>
         <p>👉 Scripts em desenvolvimento. Alguns podem não funcionar ainda.</p>
@@ -328,14 +323,13 @@ const loader = document.getElementById("loader");
 const msg = document.getElementById("msg");
 const loginPage = document.getElementById("loginPage");
 const app = document.getElementById("app");
-const userDisplay = document.getElementById("userDisplay");
 const userDisplayTop = document.getElementById("userDisplayTop");
 
 // LOGIN
 window.login = async function(){
     loader.classList.remove("hidden");
     msg.innerText = "";
-    await new Promise(r => setTimeout(r, 800)); // loading rápido
+    await new Promise(r => setTimeout(r, 800));
 
     // Usuario admin temporário
     if(username.value === "NikolasP" && password.value === "2011"){
@@ -350,7 +344,6 @@ window.login = async function(){
 function startPanel(user){
     loginPage.classList.add("hidden");
     app.classList.remove("hidden");
-    userDisplay.innerText = user;
     userDisplayTop.innerText = `Bem-vindo, ${user}`;
 }
 
@@ -364,7 +357,6 @@ window.show = function(id){
     ["inicio","scripts","tutorial","admin"].forEach(x=>document.getElementById(x).classList.add("hidden"));
     document.getElementById(id).classList.remove("hidden");
 
-    // ativa o menu lateral
     document.querySelectorAll(".sidebar a").forEach(a=>a.classList.remove("active"));
     const menu = Array.from(document.querySelectorAll(".sidebar a")).find(a=>a.getAttribute("onclick")==`show('${id}')`);
     if(menu) menu.classList.add("active");
