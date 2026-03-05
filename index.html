@@ -1,349 +1,259 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Nikolas Scripts</title>
 
-<!-- Favicon local -->
-<link rel="icon" type="image/png" href="favicon.png?v=1">
-
-<!-- Fonte -->
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="favicon.png">
 
 <style>
-:root{
-    --neon:#00ff88;
-}
 
-/* RESET */
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
-html, body{height:100%;overflow:hidden;}
-
-/* ================= FUNDO ANIMADO ================= */
 body{
-    background: linear-gradient(270deg, #000000, #00ff88, #000000, #00aa55);
-    background-size: 800% 800%;
-    animation: gradientBG 15s ease infinite;
-    position: relative;
+margin:0;
+font-family:Arial, Helvetica, sans-serif;
+color:white;
+overflow:hidden;
 }
 
-@keyframes gradientBG{
-    0%{background-position:0% 50%;}
-    50%{background-position:100% 50%;}
-    100%{background-position:0% 50%;}
+/* FUNDO ANIMADO */
+
+body::before{
+content:"";
+position:fixed;
+width:100%;
+height:100%;
+background:linear-gradient(270deg,#021a02,#062d06,#000000,#052505);
+background-size:800% 800%;
+animation:fundo 20s ease infinite;
+z-index:-1;
 }
 
-/* ================= LOGIN ================= */
-.login{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
-    position:relative;
-    z-index:1;
+@keyframes fundo{
+
+0%{background-position:0% 50%;}
+50%{background-position:100% 50%;}
+100%{background-position:0% 50%;}
+
 }
-.login-box{
-    width:380px;
-    padding:45px;
-    border-radius:20px;
-    background: rgba(10, 20, 15, 0.65);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(0,255,136,0.2);
-    box-shadow: 0 0 40px rgba(0,0,0,0.7);
-    animation: fadeLogin 0.8s ease;
-    text-align:center;
+
+/* LOGIN */
+
+#loginScreen{
+
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+
 }
-@keyframes fadeLogin{
-    from{opacity:0; transform:translateY(20px);}
-    to{opacity:1; transform:translateY(0);}
+
+.loginBox{
+
+background:rgba(0,0,0,0.75);
+padding:40px;
+border-radius:10px;
+box-shadow:0 0 20px rgba(0,255,100,0.25);
+text-align:center;
+width:300px;
+
 }
-.login-box h2{
-    color: var(--neon);
-    margin-bottom:30px;
-    font-weight:800;
-    letter-spacing:2px;
-    text-shadow:0 0 15px rgba(0,255,136,0.6);
-}
+
 input{
-    width:100%;
-    padding:12px;
-    margin:12px 0;
-    background: rgba(0,0,0,0.4);
-    border:1px solid rgba(0,255,136,0.3);
-    border-radius:8px;
-    color:white;
-    outline:none;
-    transition:0.3s;
-}
-input:focus{
-    border-color: var(--neon);
-    box-shadow:0 0 12px rgba(0,255,136,0.6);
-}
-button{
-    width:100%;
-    padding:12px;
-    margin-top:15px;
-    border:none;
-    border-radius:8px;
-    font-weight:700;
-    background: linear-gradient(90deg,#00ff88,#00cc6a);
-    color:#001a0f;
-    cursor:pointer;
-    transition:.3s;
-}
-button:hover{
-    transform:scale(1.05);
-    box-shadow:0 0 20px var(--neon);
-}
-#loader{
-    border: 4px solid rgba(0,255,136,0.2);
-    border-top: 4px solid #00ff88;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    margin: 20px auto;
-    animation: spin 0.7s linear infinite;
-}
-@keyframes spin{
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-.hidden{display:none;}
 
-/* ================= PAINEL INTERNO ================= */
+width:100%;
+padding:10px;
+margin-top:10px;
+border:none;
+border-radius:5px;
+outline:none;
+
+}
+
+button{
+
+width:100%;
+padding:10px;
+margin-top:15px;
+border:none;
+border-radius:5px;
+background:#0f7a0f;
+color:white;
+cursor:pointer;
+
+}
+
+button:hover{
+
+background:#12a312;
+
+}
+
+/* PAINEL */
+
+#dashboard{
+
+display:none;
+height:100vh;
+
+}
+
+/* SIDEBAR */
+
 .sidebar{
-    position:fixed;
-    width:260px;
-    height:100vh;
-    background: rgba(5,15,10,0.85);
-    backdrop-filter: blur(10px);
-    padding:35px 25px;
-    border-right: 1px solid rgba(0,255,136,0.15);
-    display:flex;
-    flex-direction:column;
+
+width:200px;
+height:100%;
+background:#050505;
+position:fixed;
+left:0;
+top:0;
+display:flex;
+flex-direction:column;
+justify-content:space-between;
+
 }
-.logo{
-    font-size:22px;
-    font-weight:800;
-    color:#00ff88;
-    margin-bottom:50px;
-    letter-spacing:1px;
-    text-shadow:0 0 10px rgba(0,255,136,0.4);
+
+.sidebar h2{
+
+text-align:center;
+padding:20px 0;
+
 }
-.sidebar a{
-    display:block;
-    padding:12px 15px;
-    margin:8px 0;
-    border-radius:10px;
-    cursor:pointer;
-    transition:.3s;
-    color:#ccc;
-    font-weight:500;
+
+.logout{
+
+padding:15px;
+background:#0f7a0f;
+text-align:center;
+cursor:pointer;
+
 }
-.sidebar a:hover{
-    background: rgba(0,255,136,0.08);
-    color:#00ff88;
-    transform:translateX(5px);
-}
-.sidebar a.active{
-    background: rgba(0,255,136,0.15);
-    color:#00ff88;
-    box-shadow: inset 3px 0 0 #00ff88;
-}
-#logoutSidebar{
-    position:absolute;
-    bottom:30px;
-    left:25px;
-    width:90%;
-    padding:10px;
-    border:none;
-    border-radius:8px;
-    background: linear-gradient(90deg,#00ff88,#00cc6a);
-    color:#001a0f;
-    font-weight:700;
-    cursor:pointer;
-    transition:.3s;
-}
-#logoutSidebar:hover{
-    box-shadow:0 0 15px #00ff88;
-    transform:scale(1.03);
-}
+
+/* TOPO */
+
 .topbar{
-    position:fixed;
-    left:260px;
-    top:0;
-    width:calc(100% - 260px);
-    height:70px;
-    background: rgba(5,15,10,0.85);
-    backdrop-filter: blur(10px);
-    border-bottom:1px solid rgba(0,255,136,0.15);
-    display:flex;
-    align-items:center;
-    justify-content:flex-start;
-    padding:0 30px;
-    z-index:10;
+
+margin-left:200px;
+padding:20px;
+font-size:20px;
+
 }
-.top-left{
-    font-weight:700;
-    font-size:20px;
-    color:#00ff88;
+
+/* CARDS */
+
+.cards{
+
+margin-left:200px;
+padding:20px;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:20px;
+
 }
-.content{
-    margin-left:270px;
-    margin-top:90px;
-    padding:40px;
-}
+
 .card{
-    background: rgba(13,31,23,0.6);
-    backdrop-filter: blur(15px);
-    padding:25px;
-    border-radius:20px;
-    margin-bottom:25px;
-    transition:.3s;
+
+background:rgba(0,0,0,0.6);
+padding:20px;
+border-radius:10px;
+box-shadow:0 0 10px rgba(0,255,100,0.15);
+
 }
-.card:hover{
-    transform:translateY(-5px);
-    box-shadow:0 0 15px #00ff88;
-}
-.title{
-    font-size:32px;
-    font-weight:800;
-    margin-bottom:10px;
-}
-.badge{
-    color:#00ff88;
-    font-weight:600;
-}
+
 </style>
 </head>
+
 <body>
 
 <!-- LOGIN -->
-<div class="login" id="loginPage">
-    <div class="login-box">
-        <h2>Nikolas Scripts</h2>
-        <input id="username" placeholder="Usuário">
-        <input id="password" type="password" placeholder="Senha">
-        <div id="loader" class="hidden"></div>
-        <button onclick="login()">Entrar</button>
-        <p id="msg" style="color:#ff4d4d;margin-top:10px;"></p>
-    </div>
+
+<div id="loginScreen">
+
+<div class="loginBox">
+
+<h2>Login</h2>
+
+<input id="user" placeholder="Usuário">
+
+<input id="pass" type="password" placeholder="Senha">
+
+<button onclick="login()">Entrar</button>
+
+</div>
+
 </div>
 
 <!-- PAINEL -->
-<div class="app hidden" id="app">
 
-  <!-- Sidebar -->
-  <div class="sidebar">
-    <div class="logo">Nikolas Scripts</div>
-    <a onclick="show('inicio')" class="active">🏠 Início</a>
-    <a onclick="show('scripts')">📜 Scripts</a>
-    <a onclick="show('tutorial')">📘 Tutorial</a>
-    <a id="adminBtn" onclick="show('admin')">🛠 Admin</a>
-    <button id="logoutSidebar" onclick="logout()">Sair</button>
-  </div>
+<div id="dashboard">
 
-  <!-- Topbar -->
-  <div class="topbar">
-    <div class="top-left"><span id="userDisplayTop"></span></div>
-  </div>
+<div class="sidebar">
 
-  <!-- Conteúdo principal -->
-  <div class="content">
-    <!-- Início -->
-    <div id="inicio">
-      <div class="card">
-        <p><b>NOVIDADES</b></p>
-        <p>👉 Scripts em desenvolvimento. Alguns podem não funcionar ainda.</p>
-      </div>
-      <div class="card">
-        <p>Exemplo de Card 2</p>
-      </div>
-    </div>
+<h2>Painel</h2>
 
-    <!-- Scripts -->
-    <div id="scripts" class="hidden">
-      <div class="title">Scripts Disponíveis</div>
-      <div id="scriptList">
-        <div class="card">Exemplo de script 1</div>
-      </div>
-    </div>
+<div class="logout" onclick="logout()">Logout</div>
 
-    <!-- Tutorial -->
-    <div id="tutorial" class="hidden">
-      <div class="title">Tutorial Bookmarklet</div>
-      <div class="card">
-        <p>1️⃣ Abra seu navegador e crie um favorito</p>
-        <p>2️⃣ Cole o script no favorito e salve</p>
-        <p>3️⃣ Clique no favorito em qualquer site → script será executado</p>
-      </div>
-    </div>
+</div>
 
-    <!-- Admin -->
-    <div id="admin" class="hidden">
-      <div class="title">Painel Administrativo</div>
-      <div class="card">
-        <h3>Usuários Cadastrados</h3>
-        <p>Exemplo: NikolasP</p>
-      </div>
-      <div class="card">
-        <h3>Adicionar Novo Usuário</h3>
-        <input placeholder="Novo usuário">
-        <input placeholder="Senha" type="password">
-        <button>Criar Usuário</button>
-      </div>
-    </div>
+<div class="topbar">
 
-  </div>
+Bem-vindo, <span id="username"></span>
+
+</div>
+
+<div class="cards">
+
+<div class="card">
+<h3>Scripts</h3>
+<p>Gerenciar scripts</p>
+</div>
+
+<div class="card">
+<h3>Usuários</h3>
+<p>Painel de usuários</p>
+</div>
+
+<div class="card">
+<h3>Config</h3>
+<p>Configurações</p>
+</div>
+
+</div>
+
 </div>
 
 <script>
-// ELEMENTOS
-const username = document.getElementById("username");
-const password = document.getElementById("password");
-const loader = document.getElementById("loader");
-const msg = document.getElementById("msg");
-const loginPage = document.getElementById("loginPage");
-const app = document.getElementById("app");
-const userDisplayTop = document.getElementById("userDisplayTop");
 
-// LOGIN
-window.login = async function(){
-    loader.classList.remove("hidden");
-    msg.innerText = "";
-    await new Promise(r => setTimeout(r, 800));
+const USER="NikolasP"
+const PASS="2011"
 
-    // Usuario admin temporário
-    if(username.value === "NikolasP" && password.value === "2011"){
-        loader.classList.add("hidden");
-        startPanel("NikolasP");
-    } else {
-        loader.classList.add("hidden");
-        msg.innerText = "Usuário ou senha inválidos";
-    }
-};
+function login(){
 
-function startPanel(user){
-    loginPage.classList.add("hidden");
-    app.classList.remove("hidden");
-    userDisplayTop.innerText = `Bem-vindo, ${user}`;
+let u=document.getElementById("user").value
+let p=document.getElementById("pass").value
+
+if(u===USER && p===PASS){
+
+document.getElementById("loginScreen").style.display="none"
+document.getElementById("dashboard").style.display="block"
+document.getElementById("username").innerText=u
+
+}else{
+
+alert("Login inválido")
+
 }
 
-// LOGOUT
-window.logout = function(){
-    location.reload();
-};
+}
 
-// ABAS
-window.show = function(id){
-    ["inicio","scripts","tutorial","admin"].forEach(x=>document.getElementById(x).classList.add("hidden"));
-    document.getElementById(id).classList.remove("hidden");
+function logout(){
 
-    document.querySelectorAll(".sidebar a").forEach(a=>a.classList.remove("active"));
-    const menu = Array.from(document.querySelectorAll(".sidebar a")).find(a=>a.getAttribute("onclick")==`show('${id}')`);
-    if(menu) menu.classList.add("active");
-};
+location.reload()
+
+}
+
 </script>
 
 </body>
