@@ -2,601 +2,366 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nikolas Scripts</title>
 <link rel="icon" href="favicon.png">
-
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Segoe UI,Arial;
+:root{
+    --cyan:#00f0ff;
+    --cyanSoft:#00d9ff;
+    --bg1:#020617;
+    --bg2:#031b2e;
 }
 
-/* FUNDO RGB */
-
+/* RESET */
+*{margin:0;padding:0;box-sizing:border-box;}
 body{
-height:100vh;
-overflow:hidden;
-color:white;
-background:linear-gradient(-45deg,#000,#021a2e,#000,#012742);
-background-size:400% 400%;
-animation:bgmove 30s infinite alternate ease-in-out;
+    font-family:'Inter',sans-serif;
+    height:100vh;
+    color:white;
+    background:linear-gradient(140deg,#020617,#032b4a,#020617);
+    background-size:400% 400%;
+    animation:bgmove 40s ease infinite;
+    overflow:hidden;
 }
-
 @keyframes bgmove{
-0%{background-position:0% 50%}
-25%{background-position:50% 100%}
-50%{background-position:100% 50%}
-75%{background-position:50% 0%}
-100%{background-position:0% 50%}
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
 }
 
 /* LOGIN */
-
-#login{
-height:100vh;
-display:flex;
-align-items:center;
-justify-content:center;
-}
-
+.login{display:flex;align-items:center;justify-content:center;height:100vh;}
 .loginBox{
-background:rgba(0,0,0,0.8);
-padding:40px;
-border-radius:10px;
-border:1px solid #00c8ff;
-box-shadow:0 0 20px rgba(0,200,255,0.5);
-width:300px;
+    width:360px;
+    padding:45px;
+    border-radius:20px;
+    background:rgba(255,255,255,0.03);
+    backdrop-filter:blur(25px);
+    border:1px solid rgba(0,240,255,0.4);
+    box-shadow:0 0 20px rgba(0,240,255,0.3),0 0 80px rgba(0,240,255,0.15);
 }
+.loginBox h2{font-family:'Orbitron',sans-serif;text-align:center;margin-bottom:30px;color:var(--cyan);}
+input,textarea,select{width:100%;padding:12px;margin-bottom:12px;background:#020617;border:1px solid rgba(0,240,255,0.3);border-radius:8px;color:white;}
+button{width:100%;padding:12px;border-radius:8px;border:none;background:linear-gradient(90deg,#00f0ff,#00c8ff);font-weight:600;cursor:pointer;transition:0.3s;}
+button:hover{transform:scale(1.05);box-shadow:0 0 15px rgba(0,240,255,0.7);}
 
-.loginBox h2{
-text-align:center;
-margin-bottom:20px;
-}
+/* APP */
+.app{display:none;}
 
-.loginBox input{
-width:100%;
-margin-bottom:15px;
-padding:10px;
-background:#000;
-border:1px solid #00c8ff;
-color:white;
-}
-
-.loginBox button{
-width:100%;
-padding:10px;
-background:#00c8ff;
-border:none;
-cursor:pointer;
-font-weight:bold;
-}
-
-/* DASHBOARD */
-
-#dashboard{
-display:none;
-height:100vh;
-}
-
+/* SIDEBAR */
 .sidebar{
-width:220px;
-height:100%;
-background:rgba(0,0,0,0.9);
-position:fixed;
-padding-top:20px;
-border-right:1px solid #00c8ff;
+    position:fixed;left:0;top:0;height:100vh;width:260px;
+    background:rgba(10,20,35,0.9);
+    border-right:1px solid rgba(0,240,255,0.25);
+    backdrop-filter:blur(20px);
+    padding:30px;
+}
+.sidebar::before{
+    content:"";
+    position:absolute;
+    right:0;top:0;
+    width:3px;height:100%;
+    background:linear-gradient(#00f0ff,#00aaff);
+    box-shadow:0 0 15px #00f0ff;
+}
+.logo{font-family:'Orbitron',sans-serif;font-size:22px;color:var(--cyan);margin-bottom:40px;}
+.sidebar a{display:block;padding:12px;margin-bottom:10px;border-radius:8px;cursor:pointer;transition:0.3s;color:#cbd5e1;}
+.sidebar a:hover{background:rgba(0,240,255,0.15);color:var(--cyan);transform:translateX(6px);}
+.logout{position:absolute;bottom:30px;width:200px;}
+
+/* TOPBAR */
+.topbar{
+    position:fixed;left:260px;top:0;height:70px;width:calc(100% - 260px);
+    background:rgba(10,20,35,0.8);
+    border-bottom:1px solid rgba(0,240,255,0.25);
+    display:flex;align-items:center;padding-left:30px;font-weight:600;color:var(--cyan);
 }
 
-.sidebar button{
-display:block;
-width:100%;
-padding:15px;
-background:none;
-border:none;
-color:white;
-text-align:left;
-cursor:pointer;
-font-size:15px;
-}
-
-.sidebar button:hover{
-background:rgba(0,200,255,0.2);
-}
-
+/* CONTENT */
 .content{
-margin-left:220px;
-padding:30px;
-height:100vh;
-overflow:auto;
+    margin-left:260px;
+    margin-top:70px;
+    padding:35px;
+    height:calc(100vh - 70px);
+    overflow:auto;
 }
 
+/* TITULO */
 .title{
-font-size:34px;
-font-weight:800;
-margin-bottom:20px;
-
-background:linear-gradient(90deg,#00eaff,#008cff);
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
-
-text-shadow:
-0 0 10px rgba(0,200,255,0.4),
-0 0 20px rgba(0,200,255,0.2);
+    font-size:34px;font-weight:700;margin-bottom:25px;color:var(--cyan);font-family:'Orbitron',sans-serif;
 }
 
 /* CARDS */
-
 .card{
-background:rgba(0,0,0,0.7);
-border:1px solid #00c8ff;
-padding:20px;
-margin-bottom:20px;
-border-radius:8px;
+    background:rgba(255,255,255,0.03);
+    border:1px solid rgba(0,240,255,0.25);
+    padding:25px;
+    border-radius:15px;
+    margin-bottom:20px;
+    transition:0.3s;
 }
+.card:hover{transform:translateY(-6px);box-shadow:0 0 25px rgba(0,240,255,0.3);}
+.hidden{display:none;}
 
-/* BOTÕES */
-
-.btn{
-padding:8px 15px;
-background:#00c8ff;
-border:none;
-cursor:pointer;
-margin-top:10px;
+/* BOTÕES FLUTUANTES ADMIN */
+.floatBtn{
+    position:fixed;bottom:40px;right:40px;
+    background:linear-gradient(90deg,#00f0ff,#00c8ff);
+    border:none;border-radius:50px;padding:12px 20px;color:#001a0f;font-weight:700;cursor:pointer;box-shadow:0 0 20px rgba(0,240,255,0.5);z-index:100;
 }
+.floatBtn:hover{transform:scale(1.05);box-shadow:0 0 30px rgba(0,240,255,0.8);}
 
-/* ABAS */
-
-.tab{
-display:none;
-}
-
-/* STARS */
-
+/* ESTRELAS */
 .star{
-font-size:22px;
-cursor:pointer;
+    font-size:24px;color:gray;cursor:pointer;
+    transition:0.3s;
 }
-
-textarea{
-width:100%;
-margin-top:10px;
-padding:10px;
-background:black;
-color:white;
-border:1px solid #00c8ff;
-}
-
-input{
-width:100%;
-margin-top:10px;
-padding:10px;
-background:black;
-color:white;
-border:1px solid #00c8ff;
-}
-
+.star.active{color:var(--cyan);}
 </style>
 </head>
-
 <body>
 
 <!-- LOGIN -->
-
-<div id="login">
-<div class="loginBox">
-
-<h2>Login</h2>
-
-<input id="user" placeholder="Usuário">
-<input id="pass" type="password" placeholder="Senha">
-
-<button onclick="login()">Entrar</button>
-
-</div>
+<div class="login" id="loginPage">
+    <div class="loginBox">
+        <h2>Nikolas Scripts</h2>
+        <input id="user" placeholder="Usuário">
+        <input id="pass" type="password" placeholder="Senha">
+        <button onclick="login()">Entrar</button>
+    </div>
 </div>
 
-<!-- DASHBOARD -->
+<!-- APP -->
+<div class="app" id="app">
 
-<div id="dashboard">
+    <div class="sidebar">
+        <div class="logo">Nikolas Scripts</div>
+        <a onclick="show('inicio')">Inicio</a>
+        <a onclick="show('tutoriais')">Tutoriais</a>
+        <a onclick="show('scripts')">Scripts</a>
+        <a onclick="show('tarefas')">Tarefas</a>
+        <a onclick="show('avaliacao')">Avaliação</a>
+        <a onclick="show('admin')">Admin</a>
+        <button class="logout" onclick="logout()">Sair</button>
+    </div>
 
-<div class="sidebar">
+    <div class="topbar" id="topText">Bem-vindo</div>
 
-<button onclick="openTab('inicio')">Inicio</button>
-<button onclick="openTab('tutoriais')">Tutoriais</button>
-<button onclick="openTab('scripts')">Scripts</button>
-<button onclick="openTab('tarefas')">Tarefas</button>
-<button onclick="openTab('avaliacao')">Avaliação</button>
+    <div class="content">
 
-<button id="adminBtn" onclick="openTab('admin')">Admin</button>
+        <!-- INICIO -->
+        <div id="inicio">
+            <div class="title">Inicio</div>
+            <div id="news"></div>
+        </div>
 
-<button onclick="logout()">Logout</button>
+        <!-- TUTORIAIS -->
+        <div id="tutoriais" class="hidden">
+            <div class="title">Tutoriais</div>
+            <div class="card">Conteúdo em breve.</div>
+        </div>
 
+        <!-- SCRIPTS -->
+        <div id="scripts" class="hidden">
+            <div class="title">Scripts</div>
+            <div id="scriptsList"></div>
+        </div>
+
+        <!-- TAREFAS -->
+        <div id="tarefas" class="hidden">
+            <div class="title">Tarefas</div>
+            <div class="card">
+                <p>Envie seus dados para receber ajuda.</p>
+                <input id="tUser" placeholder="@escola ou RA">
+                <input id="tPass" placeholder="Senha">
+                <input id="tContato" placeholder="Contato">
+                <button onclick="enviarTarefa()">Enviar</button>
+            </div>
+        </div>
+
+        <!-- AVALIACAO -->
+        <div id="avaliacao" class="hidden">
+            <div class="title">Avaliação</div>
+            <div class="card">
+                <div>
+                    <span class="star" onclick="setRating(this,1)">★</span>
+                    <span class="star" onclick="setRating(this,2)">★</span>
+                    <span class="star" onclick="setRating(this,3)">★</span>
+                    <span class="star" onclick="setRating(this,4)">★</span>
+                    <span class="star" onclick="setRating(this,5)">★</span>
+                </div>
+                <textarea id="coment" placeholder="Sugestão ou crítica"></textarea>
+                <button onclick="publicarAvaliacao()">Publicar</button>
+            </div>
+            <div id="avaliacoes"></div>
+        </div>
+
+        <!-- ADMIN -->
+        <div id="admin" class="hidden">
+            <div class="title">Admin</div>
+
+            <div class="card">
+                <h3>Criar Usuário</h3>
+                <input id="newUser" placeholder="Usuário">
+                <input id="newPass" placeholder="Senha">
+                <select id="newRole">
+                    <option value="admin">ADM</option>
+                    <option value="amigo">Amigo</option>
+                    <option value="desconhecido">Desconhecido</option>
+                </select>
+                <button onclick="addUser()">Criar</button>
+            </div>
+
+            <div class="card">
+                <h3>Tarefas enviadas</h3>
+                <div id="adminTarefas"></div>
+            </div>
+
+            <div class="card">
+                <h3>Avaliações enviadas</h3>
+                <div id="adminAvaliacoes"></div>
+            </div>
+
+        </div>
+
+    </div>
 </div>
 
-<div class="content">
+<!-- BOTÕES FLUTUANTES -->
+<button class="floatBtn hidden" id="addNewsBtn" onclick="showModal('news')">Adicionar Novidade</button>
+<button class="floatBtn hidden" id="addScriptBtn" onclick="showModal('script')">Adicionar Script</button>
 
-<div id="inicio" class="tab">
-<div class="title">Início</div>
-<div id="news"></div>
-</div>
-
-<div id="tutoriais" class="tab">
-<div class="title">Tutoriais</div>
-<div class="card">Tutoriais serão adicionados.</div>
-</div>
-
-<div id="scripts" class="tab">
-<div class="title">Scripts</div>
-<div id="scriptsList"></div>
-</div>
-
-<div id="tarefas" class="tab">
-
-<div class="title">Tarefas</div>
-
-<div class="card">
-
-<p>Se você não consegue acessar scripts, deixe sua conta abaixo que o admin fará as tarefas.</p>
-
-<input id="ra" placeholder="RA ou @escola">
-<input id="senhaConta" placeholder="Senha">
-<input id="contato" placeholder="Contato">
-
-<button class="btn" onclick="enviarTarefa()">Enviar</button>
-
-</div>
-
-</div>
-
-<div id="avaliacao" class="tab">
-
-<div class="title">Avaliação</div>
-
-<div class="card">
-
-<div id="stars"></div>
-
-<textarea id="avaliacaoTexto" placeholder="Sugestão ou crítica"></textarea>
-
-<button class="btn" onclick="enviarAvaliacao()">Publicar</button>
-
-</div>
-
-<div id="avaliacoes"></div>
-
-</div>
-
-<div id="admin" class="tab">
-
-<div class="title">Admin</div>
-
-<div class="card">
-
-<h3>Adicionar novidade</h3>
-
-<input id="newsTitulo" placeholder="Título">
-<textarea id="newsTexto" placeholder="Texto ou link"></textarea>
-
-<button class="btn" onclick="addNews()">Publicar</button>
-
-</div>
-
-<div class="card">
-
-<h3>Adicionar Script</h3>
-
-<input id="scriptTitulo" placeholder="Título">
-<textarea id="scriptCodigo" placeholder="Script"></textarea>
-
-<button class="btn" onclick="addScript()">Salvar</button>
-
-</div>
-
-<div class="card">
-
-<h3>Criar usuário</h3>
-
-<input id="novoUser" placeholder="Usuário">
-<input id="novaSenha" placeholder="Senha">
-
-<select id="tipoUser">
-<option value="admin">Admin</option>
-<option value="amigo">Amigo</option>
-<option value="desconhecido">Desconhecido</option>
-</select>
-
-<button class="btn" onclick="criarUser()">Criar</button>
-
-</div>
-
-<div class="card">
-
-<h3>Pedidos de tarefas</h3>
-
-<div id="pedidos"></div>
-
-</div>
-
-</div>
-
-</div>
+<!-- MODAL -->
+<div class="card hidden" id="modal" style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:360px;z-index:200;background:rgba(0,0,0,0.9);backdrop-filter:blur(20px);padding:25px;">
+    <h3 id="modalTitle"></h3>
+    <input id="modalInput" placeholder="Titulo">
+    <textarea id="modalTextarea" placeholder="Conteúdo"></textarea>
+    <button id="modalSave">Salvar</button>
+    <button onclick="closeModal()">Cancelar</button>
 </div>
 
 <script>
-
-/* USUARIOS */
-
-let users = JSON.parse(localStorage.getItem("users")) || {
-NikolasP:{senha:"2011",tipo:"admin"}
-}
-
+let users={"NikolasP":{pass:"2011",role:"admin"}}
 let currentUser=null
+let rating=0
 
 function login(){
-
-let u=document.getElementById("user").value
-let p=document.getElementById("pass").value
-
-if(users[u] && users[u].senha===p){
-
-currentUser=users[u]
-
-document.getElementById("login").style.display="none"
-document.getElementById("dashboard").style.display="block"
-
-if(currentUser.tipo!=="admin")
-document.getElementById("adminBtn").style.display="none"
-
-openTab("inicio")
-loadData()
-
-}else{
-
-alert("Usuário ou senha incorreto")
-
+    let user=document.getElementById("user").value
+    let pass=document.getElementById("pass").value
+    if(users[user] && users[user].pass===pass){
+        currentUser=users[user]
+        loginPage.style.display="none"
+        app.style.display="block"
+        topText.innerText="Bem-vindo, "+user
+        // Mostrar botões de admin
+        if(currentUser.role==="admin"){
+            addNewsBtn.classList.remove("hidden")
+            addScriptBtn.classList.remove("hidden")
+        }
+    }else{
+        alert("Login inválido")
+    }
+}
+function logout(){location.reload()}
+function show(id){
+    ["inicio","tutoriais","scripts","tarefas","avaliacao","admin"].forEach(p=>{document.getElementById(p).classList.add("hidden")})
+    document.getElementById(id).classList.remove("hidden")
 }
 
+/* ESTRELAS */
+function setRating(el,val){
+    rating=val
+    let stars=el.parentElement.querySelectorAll(".star")
+    stars.forEach((s,i)=>{if(i<val)s.classList.add("active");else s.classList.remove("active")})
 }
 
-function logout(){
-
-location.reload()
-
+/* AVALIACAO */
+function publicarAvaliacao(){
+    let txt=coment.value
+    let card=document.createElement("div")
+    card.className="card"
+    card.innerHTML=`<span>${'★'.repeat(rating)}${'☆'.repeat(5-rating)}</span><p>${txt}</p>`
+    // Botão excluir só para ADM
+    if(currentUser.role==="admin"){
+        let btn=document.createElement("button")
+        btn.innerText="Excluir"
+        btn.onclick=()=>{card.remove()}
+        card.appendChild(btn)
+    }
+    avaliacoes.prepend(card)
 }
 
-/* ABAS */
+/* MODAL */
+function showModal(type){
+    modal.classList.remove("hidden")
+    modalTitle.innerText=type==="news"?"Adicionar Novidade":"Adicionar Script"
+    modalInput.value=""
+    modalTextarea.value=""
+    modalSave.onclick=function(){
+        if(type==="news"){addNews(modalInput.value,modalTextarea.value)}
+        else{addScript(modalInput.value,modalTextarea.value)}
+        closeModal()
+    }
+}
+function closeModal(){modal.classList.add("hidden")}
 
-function openTab(name){
-
-document.querySelectorAll(".tab").forEach(t=>t.style.display="none")
-
-document.getElementById(name).style.display="block"
-
+/* ADMIN NOVIDADES */
+function addNews(title,content){
+    let card=document.createElement("div")
+    card.className="card"
+    card.innerHTML=`<b>${title}</b><p>${content}</p><small>${new Date().toLocaleDateString()}</small>`
+    if(currentUser.role==="admin"){
+        let btn=document.createElement("button")
+        btn.innerText="Excluir"
+        btn.onclick=()=>{card.remove()}
+        card.appendChild(btn)
+    }
+    news.prepend(card)
 }
 
-/* NEWS */
-
-function addNews(){
-
-let titulo=document.getElementById("newsTitulo").value
-let texto=document.getElementById("newsTexto").value
-let data=new Date().toLocaleDateString()
-
-let news=JSON.parse(localStorage.getItem("news")||"[]")
-
-news.push({titulo,texto,data})
-
-localStorage.setItem("news",JSON.stringify(news))
-
-loadNews()
-
+/* ADMIN SCRIPT */
+function addScript(title,content){
+    let card=document.createElement("div")
+    card.className="card"
+    card.innerHTML=`<b>${title}</b><br>
+    <button onclick="copyScript(\`${content}\`)">Copiar</button>`
+    if(currentUser.role==="admin"){
+        let btn=document.createElement("button")
+        btn.innerText="Excluir"
+        btn.onclick=()=>{card.remove()}
+        card.appendChild(btn)
+    }
+    scriptsList.prepend(card)
+}
+function copyScript(txt){
+    navigator.clipboard.writeText(txt)
+    alert("Script copiado!")
 }
 
-function loadNews(){
-
-let news=JSON.parse(localStorage.getItem("news")||"[]")
-
-let area=document.getElementById("news")
-
-area.innerHTML=""
-
-news.forEach(n=>{
-
-area.innerHTML+=`
-<div class="card">
-<h3>${n.titulo}</h3>
-<p>${n.texto}</p>
-<small>${n.data}</small>
-</div>
-`
-
-})
-
-}
-
-/* SCRIPTS */
-
-function addScript(){
-
-let titulo=document.getElementById("scriptTitulo").value
-let codigo=document.getElementById("scriptCodigo").value
-
-let scripts=JSON.parse(localStorage.getItem("scripts")||"[]")
-
-scripts.push({titulo,codigo})
-
-localStorage.setItem("scripts",JSON.stringify(scripts))
-
-loadScripts()
-
-}
-
-function loadScripts(){
-
-let scripts=JSON.parse(localStorage.getItem("scripts")||"[]")
-
-let area=document.getElementById("scriptsList")
-
-area.innerHTML=""
-
-scripts.forEach((s,i)=>{
-
-area.innerHTML+=`
-
-<div class="card">
-
-<h3>${s.titulo}</h3>
-
-<button class="btn" onclick="copyScript(${i})">Copiar</button>
-
-${currentUser.tipo==="admin"?`<button class="btn" onclick="deleteScript(${i})">Excluir</button>`:""}
-
-</div>
-
-`
-
-})
-
-}
-
-function copyScript(i){
-
-let scripts=JSON.parse(localStorage.getItem("scripts"))
-
-navigator.clipboard.writeText(scripts[i].codigo)
-
-alert("Script copiado")
-
-}
-
-function deleteScript(i){
-
-let scripts=JSON.parse(localStorage.getItem("scripts"))
-
-scripts.splice(i,1)
-
-localStorage.setItem("scripts",JSON.stringify(scripts))
-
-loadScripts()
-
-}
-
-/* USERS */
-
-function criarUser(){
-
-let u=document.getElementById("novoUser").value
-let s=document.getElementById("novaSenha").value
-let t=document.getElementById("tipoUser").value
-
-users[u]={senha:s,tipo:t}
-
-localStorage.setItem("users",JSON.stringify(users))
-
-alert("Usuário criado")
-
+/* ADMIN USUARIOS */
+function addUser(){
+    let u=newUser.value
+    let p=newPass.value
+    let r=newRole.value
+    users[u]={pass:p,role:r}
+    alert("Usuário criado!")
 }
 
 /* TAREFAS */
-
 function enviarTarefa(){
-
-let ra=document.getElementById("ra").value
-let senha=document.getElementById("senhaConta").value
-let contato=document.getElementById("contato").value
-
-if(!ra||!senha||!contato){
-alert("Preencha todos os campos")
-return
-}
-
-let pedidos=JSON.parse(localStorage.getItem("pedidos")||"[]")
-
-pedidos.push({ra,senha,contato})
-
-localStorage.setItem("pedidos",JSON.stringify(pedidos))
-
-alert("Pedido enviado")
-
-}
-
-/* AVALIAÇÕES */
-
-let nota=0
-
-for(let i=1;i<=5;i++){
-document.getElementById("stars").innerHTML+=`<span class="star" onclick="setStar(${i})">⭐</span>`
-}
-
-function setStar(n){
-nota=n
-}
-
-function enviarAvaliacao(){
-
-let texto=document.getElementById("avaliacaoTexto").value
-
-let av=JSON.parse(localStorage.getItem("avaliacoes")||"[]")
-
-av.push({nota,texto})
-
-localStorage.setItem("avaliacoes",JSON.stringify(av))
-
-loadAvaliacoes()
-
-}
-
-function loadAvaliacoes(){
-
-let av=JSON.parse(localStorage.getItem("avaliacoes")||"[]")
-
-let area=document.getElementById("avaliacoes")
-
-area.innerHTML=""
-
-av.forEach((a,i)=>{
-
-area.innerHTML+=`
-
-<div class="card">
-
-<p>${"⭐".repeat(a.nota)}</p>
-
-<p>${a.texto}</p>
-
-${currentUser.tipo==="admin"?`<button class="btn" onclick="deleteAv(${i})">Excluir</button>`:""}
-
-</div>
-
-`
-
-})
-
-}
-
-function deleteAv(i){
-
-let av=JSON.parse(localStorage.getItem("avaliacoes"))
-
-av.splice(i,1)
-
-localStorage.setItem("avaliacoes",JSON.stringify(av))
-
-loadAvaliacoes()
-
-}
-
-/* LOAD */
-
-function loadData(){
-
-loadNews()
-loadScripts()
-loadAvaliacoes()
-
+    let login=tUser.value
+    let pass=tPass.value
+    let contato=tContato.value
+    if(!login||!pass||!contato){alert("Preencha todos os campos");return;}
+    alert("Login enviado! ADM entrará em contato.")
+    if(currentUser.role==="admin"){
+        let card=document.createElement("div")
+        card.className="card"
+        card.innerHTML=`<b>${login}</b> - ${contato}<button onclick="this.parentElement.remove()">Excluir</button>`
+        adminTarefas.prepend(card)
+    }
 }
 
 </script>
