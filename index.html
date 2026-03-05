@@ -2,375 +2,156 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nikolas Scripts</title>
 
-<link rel="icon" type="image/png" href="favicon.png">
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+<link rel="icon" href="favicon.png">
 
 <style>
-
-:root{
---cyan:#00eaff;
---cyan2:#008cff;
-}
-
-/* RESET */
 
 *{
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:'Poppins',sans-serif;
+font-family:Segoe UI,Arial;
 }
 
-html,body{
-height:100%;
-overflow:hidden;
-color:white;
-}
-
-/* FUNDO RGB */
+/* BACKGROUND RGB */
 
 body{
-background: linear-gradient(270deg,#020611,#071a3a,#020611,#001933,#020611);
-background-size:800% 800%;
-animation:bgMove 30s ease infinite;
+height:100vh;
+overflow:hidden;
+color:white;
+background:linear-gradient(-45deg,#000,#021a2e,#000,#012742);
+background-size:400% 400%;
+animation:bgmove 25s infinite alternate ease-in-out;
 }
 
-@keyframes bgMove{
-
-0%{background-position:0% 50%;}
-25%{background-position:50% 0%;}
-50%{background-position:100% 50%;}
-75%{background-position:50% 100%;}
-100%{background-position:0% 50%;}
-
+@keyframes bgmove{
+0%{background-position:0% 50%}
+25%{background-position:50% 100%}
+50%{background-position:100% 50%}
+75%{background-position:50% 0%}
+100%{background-position:0% 50%}
 }
 
 /* LOGIN */
 
-.login{
-display:flex;
-justify-content:center;
-align-items:center;
+#login{
 height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
 }
 
-.login-box{
-
-width:340px;
+.loginBox{
+background:rgba(0,0,0,0.7);
 padding:40px;
+border-radius:10px;
+border:1px solid #00eaff;
+box-shadow:0 0 20px rgba(0,200,255,0.5);
+width:300px;
+}
 
-background:rgba(10,10,15,0.75);
-
-border-radius:14px;
-
-backdrop-filter:blur(10px);
-
-border:1px solid rgba(0,200,255,0.25);
-
-box-shadow:
-0 0 20px rgba(0,200,255,0.25),
-0 0 40px rgba(0,200,255,0.15);
-
-animation:aparecer 1s ease;
-
+.loginBox h2{
 text-align:center;
-
-}
-
-@keyframes aparecer{
-
-from{
-opacity:0;
-transform:translateY(40px);
-}
-
-to{
-opacity:1;
-transform:translateY(0);
-}
-
-}
-
-.login-box h2{
-color:var(--cyan);
-margin-bottom:5px;
-}
-
-.sub{
-color:#aaa;
-font-size:13px;
 margin-bottom:20px;
 }
 
-input{
-
+.loginBox input{
 width:100%;
-padding:12px;
-
-margin:12px 0;
-
-background:rgba(0,0,0,0.6);
-
-border-radius:8px;
-
-border:1px solid rgba(0,200,255,0.25);
-
+margin-bottom:15px;
+padding:10px;
+background:#000;
+border:1px solid #00c8ff;
 color:white;
-
-outline:none;
-
-transition:0.3s;
-
 }
 
-input:focus{
-
-border:1px solid var(--cyan);
-
-box-shadow:0 0 8px var(--cyan);
-
-}
-
-button{
-
+.loginBox button{
 width:100%;
-padding:12px;
-
-margin-top:10px;
-
-background:linear-gradient(45deg,var(--cyan),var(--cyan2));
-
+padding:10px;
+background:#00c8ff;
 border:none;
-
-border-radius:8px;
-
-color:white;
-
-font-weight:bold;
-
 cursor:pointer;
-
-transition:0.3s;
-
+font-weight:bold;
 }
 
-button:hover{
+/* DASHBOARD */
 
-transform:translateY(-2px);
-
-box-shadow:
-0 0 10px var(--cyan),
-0 0 20px var(--cyan2);
-
-}
-
-/* APP */
-
-.app{
+#dashboard{
 display:none;
-height:100%;
+height:100vh;
 }
-
-/* SIDEBAR */
 
 .sidebar{
-
+width:220px;
+height:100%;
+background:rgba(0,0,0,0.85);
 position:fixed;
-top:0;
-
-width:260px;
-height:100vh;
-
-background:rgba(5,10,20,0.92);
-
-backdrop-filter:blur(12px);
-
-padding:18px 20px;
-
-border-right:1px solid rgba(0,200,255,0.2);
-
-box-shadow:
-8px 0 40px rgba(0,0,0,0.7),
-inset -1px 0 0 rgba(0,200,255,0.15);
-
+padding-top:20px;
+border-right:1px solid #00c8ff;
 }
 
-.logo{
-
-font-size:22px;
-font-weight:800;
-
-color:var(--cyan);
-
-margin-bottom:35px;
-
-letter-spacing:1px;
-
-text-shadow:
-0 0 10px rgba(0,200,255,0.6),
-0 0 20px rgba(0,200,255,0.4);
-
-}
-
-.menu a{
-
+.sidebar button{
 display:block;
-padding:12px 15px;
-margin:6px 0;
-
-border-radius:8px;
-
+width:100%;
+padding:15px;
+background:none;
+border:none;
+color:white;
+text-align:left;
 cursor:pointer;
-
-position:relative;
-
-color:#cfcfcf;
-
-transition:.25s;
-
 }
 
-.menu a:hover{
-
-background:rgba(0,200,255,0.08);
-
-color:var(--cyan);
-
-transform:translateX(6px);
-
-box-shadow:inset 0 0 10px rgba(0,200,255,0.15);
-
+.sidebar button:hover{
+background:rgba(0,200,255,0.2);
 }
-
-.menu a.active{
-color:var(--cyan);
-}
-
-.menu a.active::before{
-
-content:"";
-
-position:absolute;
-
-left:-2px;
-top:6px;
-
-width:4px;
-height:28px;
-
-border-radius:3px;
-
-background:linear-gradient(
-180deg,
-#00eaff,
-#008cff,
-#00eaff
-);
-
-box-shadow:
-0 0 8px #00eaff,
-0 0 16px #00eaff;
-
-}
-
-/* TOPBAR */
-
-.topbar{
-
-position:fixed;
-
-left:260px;
-top:0;
-
-width:calc(100% - 260px);
-height:70px;
-
-background:rgba(5,10,20,0.92);
-
-display:flex;
-align-items:center;
-
-padding:0 30px;
-
-border-bottom:1px solid rgba(0,200,255,0.15);
-
-}
-
-.user{
-font-weight:600;
-color:var(--cyan);
-}
-
-/* CONTEUDO */
 
 .content{
-
-margin-left:260px;
-margin-top:90px;
-
-padding:40px;
-
-animation:fade .6s;
-
-}
-
-@keyframes fade{
-
-from{
-opacity:0;
-transform:translateY(10px);
-}
-
-to{
-opacity:1;
-transform:translateY(0);
-}
-
-}
-
-.card{
-
-background:rgba(13,31,23,0.6);
-
-backdrop-filter:blur(15px);
-
-padding:25px;
-
-border-radius:14px;
-
-margin-bottom:20px;
-
-transition:.3s;
-
-}
-
-.card:hover{
-
-transform:translateY(-4px);
-
-box-shadow:0 0 12px var(--cyan);
-
+margin-left:220px;
+padding:30px;
+height:100vh;
+overflow:auto;
 }
 
 .title{
-font-size:28px;
-margin-bottom:10px;
+font-size:32px;
+font-weight:800;
+margin-bottom:20px;
+
+background:linear-gradient(90deg,#00eaff,#008cff);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+
+text-shadow:
+0 0 10px rgba(0,200,255,0.4),
+0 0 20px rgba(0,200,255,0.2);
 }
 
-/* LOGOUT */
+/* CARDS */
 
-.logout{
+.card{
+background:rgba(0,0,0,0.6);
+border:1px solid #00c8ff;
+padding:20px;
+margin-bottom:20px;
+border-radius:8px;
+}
 
-position:absolute;
+/* BUTTON */
 
-bottom:30px;
+.btn{
+padding:8px 15px;
+background:#00c8ff;
+border:none;
+cursor:pointer;
+margin-top:10px;
+}
 
-width:80%;
+/* STARS */
 
+.star{
+font-size:22px;
+cursor:pointer;
 }
 
 </style>
@@ -378,99 +159,142 @@ width:80%;
 
 <body>
 
-<div class="login" id="loginPage">
+<!-- LOGIN -->
 
-<div class="login-box">
+<div id="login">
 
-<h2>Nikolas Scripts</h2>
-<p class="sub">Painel administrativo</p>
+<div class="loginBox">
 
-<input id="username" placeholder="Usuário">
-<input id="password" type="password" placeholder="Senha">
+<h2>Login</h2>
+
+<input id="user" placeholder="Usuário">
+
+<input id="pass" type="password" placeholder="Senha">
 
 <button onclick="login()">Entrar</button>
 
-<p id="msg"></p>
-
 </div>
 
 </div>
 
-<div class="app" id="app">
+<!-- DASHBOARD -->
+
+<div id="dashboard">
 
 <div class="sidebar">
 
-<div class="logo">Nikolas Scripts</div>
+<button onclick="openTab('inicio')">Inicio</button>
+<button onclick="openTab('tutoriais')">Tutoriais</button>
+<button onclick="openTab('scripts')">Scripts</button>
+<button onclick="openTab('tarefas')">Tarefas</button>
+<button onclick="openTab('avaliacao')">Avaliação</button>
+<button id="adminBtn" onclick="openTab('admin')">Admin</button>
 
-<div class="menu">
-
-<a onclick="show('inicio')" class="active">🏠 Início</a>
-
-<a onclick="show('scripts')">📜 Scripts</a>
-
-<a onclick="show('tutorial')">📘 Tutorial</a>
-
-<a onclick="show('admin')">🛠 Admin</a>
-
-</div>
-
-<button class="logout" onclick="logout()">Sair</button>
-
-</div>
-
-<div class="topbar">
-
-<div class="user" id="userDisplay"></div>
+<button onclick="logout()">Logout</button>
 
 </div>
 
 <div class="content">
 
-<div id="inicio">
-
+<div id="inicio" class="tab">
 <div class="title">Início</div>
-
-<div class="card">
-
-<p><b>NOVIDADES</b></p>
-
-<p>Scripts em desenvolvimento.</p>
-
+<div id="news"></div>
 </div>
 
-<div class="card">
-
-Outro card exemplo.
-
+<div id="tutoriais" class="tab">
+<div class="title">Tutoriais</div>
+<div class="card">Tutoriais serão adicionados.</div>
 </div>
 
-</div>
-
-<div id="scripts" style="display:none">
-
+<div id="scripts" class="tab">
 <div class="title">Scripts</div>
-
-<div class="card">Nenhum script ainda.</div>
-
+<div id="scriptsList"></div>
 </div>
 
-<div id="tutorial" style="display:none">
-
-<div class="title">Tutorial</div>
+<div id="tarefas" class="tab">
+<div class="title">Tarefas</div>
 
 <div class="card">
 
-Como usar bookmarklet etc.
+<p>Se você não consegue acessar scripts, deixe sua conta abaixo que o admin fará as tarefas para você.</p>
+
+<input id="ra" placeholder="RA ou @escola">
+<input id="senhaConta" placeholder="Senha">
+<input id="contato" placeholder="Contato">
+
+<button class="btn" onclick="enviarTarefa()">Enviar</button>
 
 </div>
 
 </div>
 
-<div id="admin" style="display:none">
+<div id="avaliacao" class="tab">
+
+<div class="title">Avaliação</div>
+
+<div class="card">
+
+<div id="stars"></div>
+
+<textarea id="avaliacaoTexto" placeholder="Sugestão ou crítica"></textarea>
+
+<button class="btn" onclick="enviarAvaliacao()">Publicar</button>
+
+</div>
+
+<div id="avaliacoes"></div>
+
+</div>
+
+<div id="admin" class="tab">
 
 <div class="title">Admin</div>
 
-<div class="card">Painel admin futuramente.</div>
+<div class="card">
+
+<h3>Adicionar Novidade</h3>
+
+<input id="newsTitulo" placeholder="Título">
+<textarea id="newsTexto" placeholder="Texto ou link"></textarea>
+
+<button class="btn" onclick="addNews()">Publicar</button>
+
+</div>
+
+<div class="card">
+
+<h3>Adicionar Script</h3>
+
+<input id="scriptTitulo" placeholder="Título">
+<textarea id="scriptCodigo" placeholder="Script"></textarea>
+
+<button class="btn" onclick="addScript()">Salvar</button>
+
+</div>
+
+<div class="card">
+
+<h3>Criar Usuário</h3>
+
+<input id="novoUser" placeholder="Usuário">
+<input id="novaSenha" placeholder="Senha">
+
+<select id="tipoUser">
+<option value="admin">Admin</option>
+<option value="amigo">Amigo</option>
+<option value="desconhecido">Desconhecido</option>
+</select>
+
+<button class="btn" onclick="criarUser()">Criar</button>
+
+</div>
+
+<div class="card">
+
+<h3>Pedidos de Tarefas</h3>
+<div id="pedidos"></div>
+
+</div>
 
 </div>
 
@@ -480,47 +304,274 @@ Como usar bookmarklet etc.
 
 <script>
 
-const loginPage=document.getElementById("loginPage");
-const app=document.getElementById("app");
+/* USUÁRIOS */
+
+let users = JSON.parse(localStorage.getItem("users")) || {
+NikolasP:{senha:"2011",tipo:"admin"}
+}
+
+let currentUser=null
 
 function login(){
 
-let u=username.value;
-let p=password.value;
+let u=document.getElementById("user").value
+let p=document.getElementById("pass").value
 
-if(u==="NikolasP" && p==="2011"){
+if(users[u] && users[u].senha===p){
 
-loginPage.style.display="none";
+currentUser=users[u]
 
-app.style.display="block";
+document.getElementById("login").style.display="none"
+document.getElementById("dashboard").style.display="block"
 
-userDisplay.innerText="Bem-vindo, "+u;
+if(currentUser.tipo!=="admin")
+document.getElementById("adminBtn").style.display="none"
 
-}else{
-
-msg.innerText="Usuário ou senha inválidos";
+loadData()
 
 }
 
 }
 
 function logout(){
-location.reload();
+
+location.reload()
+
 }
 
-function show(id){
+/* ABAS */
 
-["inicio","scripts","tutorial","admin"].forEach(sec=>{
+function openTab(name){
 
-document.getElementById(sec).style.display="none";
+document.querySelectorAll(".tab").forEach(t=>t.style.display="none")
 
-});
+document.getElementById(name).style.display="block"
 
-document.getElementById(id).style.display="block";
+}
 
-document.querySelectorAll(".menu a").forEach(a=>a.classList.remove("active"));
+openTab("inicio")
 
-event.target.classList.add("active");
+/* NEWS */
+
+function addNews(){
+
+let titulo=document.getElementById("newsTitulo").value
+let texto=document.getElementById("newsTexto").value
+
+let data=new Date().toLocaleDateString()
+
+let news=JSON.parse(localStorage.getItem("news")||"[]")
+
+news.push({titulo,texto,data})
+
+localStorage.setItem("news",JSON.stringify(news))
+
+loadData()
+
+}
+
+function loadNews(){
+
+let news=JSON.parse(localStorage.getItem("news")||"[]")
+
+let area=document.getElementById("news")
+
+area.innerHTML=""
+
+news.forEach(n=>{
+
+area.innerHTML+=`
+<div class="card">
+<h3>${n.titulo}</h3>
+<p>${n.texto}</p>
+<small>${n.data}</small>
+</div>
+`
+
+})
+
+}
+
+/* SCRIPTS */
+
+function addScript(){
+
+let titulo=document.getElementById("scriptTitulo").value
+let codigo=document.getElementById("scriptCodigo").value
+
+let scripts=JSON.parse(localStorage.getItem("scripts")||"[]")
+
+scripts.push({titulo,codigo})
+
+localStorage.setItem("scripts",JSON.stringify(scripts))
+
+loadData()
+
+}
+
+function loadScripts(){
+
+let scripts=JSON.parse(localStorage.getItem("scripts")||"[]")
+
+let area=document.getElementById("scriptsList")
+
+area.innerHTML=""
+
+scripts.forEach((s,i)=>{
+
+area.innerHTML+=`
+
+<div class="card">
+
+<h3>${s.titulo}</h3>
+
+<button class="btn" onclick="copyScript(${i})">Copiar</button>
+
+${currentUser.tipo==="admin"?`<button class="btn" onclick="deleteScript(${i})">Excluir</button>`:""}
+
+</div>
+
+`
+
+})
+
+}
+
+function copyScript(i){
+
+let scripts=JSON.parse(localStorage.getItem("scripts"))
+
+navigator.clipboard.writeText(scripts[i].codigo)
+
+alert("Script copiado")
+
+}
+
+function deleteScript(i){
+
+let scripts=JSON.parse(localStorage.getItem("scripts"))
+
+scripts.splice(i,1)
+
+localStorage.setItem("scripts",JSON.stringify(scripts))
+
+loadData()
+
+}
+
+/* USERS */
+
+function criarUser(){
+
+let u=document.getElementById("novoUser").value
+let s=document.getElementById("novaSenha").value
+let t=document.getElementById("tipoUser").value
+
+users[u]={senha:s,tipo:t}
+
+localStorage.setItem("users",JSON.stringify(users))
+
+alert("Usuário criado")
+
+}
+
+/* TAREFAS */
+
+function enviarTarefa(){
+
+let ra=document.getElementById("ra").value
+let senha=document.getElementById("senhaConta").value
+let contato=document.getElementById("contato").value
+
+if(!ra||!senha||!contato) return alert("Preencha tudo")
+
+let pedidos=JSON.parse(localStorage.getItem("pedidos")||"[]")
+
+pedidos.push({ra,senha,contato})
+
+localStorage.setItem("pedidos",JSON.stringify(pedidos))
+
+loadData()
+
+}
+
+/* AVALIAÇÕES */
+
+let nota=0
+
+for(let i=1;i<=5;i++){
+
+document.getElementById("stars").innerHTML+=`<span class="star" onclick="setStar(${i})">⭐</span>`
+
+}
+
+function setStar(n){
+
+nota=n
+
+}
+
+function enviarAvaliacao(){
+
+let texto=document.getElementById("avaliacaoTexto").value
+
+let av=JSON.parse(localStorage.getItem("avaliacoes")||"[]")
+
+av.push({nota,texto})
+
+localStorage.setItem("avaliacoes",JSON.stringify(av))
+
+loadData()
+
+}
+
+function loadAvaliacoes(){
+
+let av=JSON.parse(localStorage.getItem("avaliacoes")||"[]")
+
+let area=document.getElementById("avaliacoes")
+
+area.innerHTML=""
+
+av.forEach((a,i)=>{
+
+area.innerHTML+=`
+
+<div class="card">
+
+<p>${"⭐".repeat(a.nota)}</p>
+
+<p>${a.texto}</p>
+
+${currentUser.tipo==="admin"?`<button onclick="deleteAv(${i})">Excluir</button>`:""}
+
+</div>
+
+`
+
+})
+
+}
+
+function deleteAv(i){
+
+let av=JSON.parse(localStorage.getItem("avaliacoes"))
+
+av.splice(i,1)
+
+localStorage.setItem("avaliacoes",JSON.stringify(av))
+
+loadData()
+
+}
+
+/* LOAD */
+
+function loadData(){
+
+loadNews()
+loadScripts()
+loadAvaliacoes()
 
 }
 
