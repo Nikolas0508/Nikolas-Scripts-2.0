@@ -259,6 +259,7 @@ button:hover{
     <div id="tutoriais" class="hidden">
       <div class="title">Tutoriais</div>
       <div class="card">Conteúdo em breve.</div>
+      <div class="card">Novo tutorial: Aprenda a usar scripts básicos.</div>
     </div>
 
     <!-- SCRIPTS -->
@@ -325,12 +326,14 @@ button:hover{
 
 <!-- MODAL -->
 <div id="modalPanel" class="hidden">
-  <div class="card" style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:350px;z-index:200;">
+  <div class="card" style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:400px;background:rgba(0,0,0,0.85);z-index:200;">
     <h3 id="modalTitle"></h3>
     <input id="modalInput1" placeholder="">
     <textarea id="modalInput2" placeholder=""></textarea>
-    <button onclick="saveModal()">Salvar</button>
-    <button onclick="closeModal()">Fechar</button>
+    <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:10px;">
+      <button onclick="saveModal()">Salvar</button>
+      <button onclick="closeModal()">Fechar</button>
+    </div>
   </div>
 </div>
 
@@ -452,7 +455,6 @@ function deleteCard(btn){btn.parentElement.remove()}
 
 // COPY SCRIPT
 function copyScript(txt){navigator.clipboard.writeText(txt);alert("Script copiado!")}
-
 </script>
 </body>
 </html>
