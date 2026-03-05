@@ -5,17 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nikolas Scripts</title>
 
-<link rel="icon" type="image/png" href="favicon.png?v=1">
+<link rel="icon" type="image/png" href="favicon.png">
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
 
 <style>
 
 :root{
---neon:#00eaff;
---dark:#020617;
---panel:#0a0f1c;
+--cyan:#00eaff;
+--cyan2:#008cff;
 }
+
+/* RESET */
 
 *{
 margin:0;
@@ -33,28 +34,17 @@ color:white;
 /* FUNDO RGB */
 
 body{
-
-background:linear-gradient(
-140deg,
-#000000,
-#020617,
-#0a1b2f,
-#020617,
-#000000
-);
-
-background-size:600% 600%;
-
-animation:windRGB 40s ease infinite;
-
+background: linear-gradient(270deg,#020611,#071a3a,#020611,#001933,#020611);
+background-size:800% 800%;
+animation:bgMove 30s ease infinite;
 }
 
-@keyframes windRGB{
+@keyframes bgMove{
 
 0%{background-position:0% 50%;}
-25%{background-position:100% 40%;}
-50%{background-position:40% 100%;}
-75%{background-position:60% 0%;}
+25%{background-position:50% 0%;}
+50%{background-position:100% 50%;}
+75%{background-position:50% 100%;}
 100%{background-position:0% 50%;}
 
 }
@@ -70,55 +60,58 @@ height:100vh;
 
 .login-box{
 
-width:360px;
+width:340px;
 padding:40px;
 
-background:rgba(10,10,20,0.75);
+background:rgba(10,10,15,0.75);
 
 border-radius:14px;
 
-backdrop-filter:blur(14px);
+backdrop-filter:blur(10px);
 
 border:1px solid rgba(0,200,255,0.25);
 
 box-shadow:
-0 0 20px rgba(0,200,255,0.35),
+0 0 20px rgba(0,200,255,0.25),
 0 0 40px rgba(0,200,255,0.15);
 
-animation:fade 0.8s ease;
+animation:aparecer 1s ease;
+
+text-align:center;
 
 }
 
-@keyframes fade{
+@keyframes aparecer{
 
-from{opacity:0; transform:translateY(30px);}
-to{opacity:1; transform:translateY(0);}
+from{
+opacity:0;
+transform:translateY(40px);
+}
+
+to{
+opacity:1;
+transform:translateY(0);
+}
 
 }
 
 .login-box h2{
-
-text-align:center;
-color:#00eaff;
+color:var(--cyan);
 margin-bottom:5px;
-font-weight:800;
-
 }
 
 .sub{
-
-text-align:center;
-font-size:13px;
 color:#aaa;
-margin-bottom:25px;
-
+font-size:13px;
+margin-bottom:20px;
 }
 
 input{
 
 width:100%;
 padding:12px;
-margin:10px 0;
+
+margin:12px 0;
 
 background:rgba(0,0,0,0.6);
 
@@ -136,9 +129,9 @@ transition:0.3s;
 
 input:focus{
 
-border:1px solid #00eaff;
+border:1px solid var(--cyan);
 
-box-shadow:0 0 8px #00eaff;
+box-shadow:0 0 8px var(--cyan);
 
 }
 
@@ -149,7 +142,7 @@ padding:12px;
 
 margin-top:10px;
 
-background:linear-gradient(45deg,#00eaff,#008cff);
+background:linear-gradient(45deg,var(--cyan),var(--cyan2));
 
 border:none;
 
@@ -170,71 +163,39 @@ button:hover{
 transform:translateY(-2px);
 
 box-shadow:
-0 0 10px #00eaff,
-0 0 20px #008cff;
+0 0 10px var(--cyan),
+0 0 20px var(--cyan2);
 
 }
-
-#loader{
-
-border:3px solid rgba(0,200,255,0.2);
-border-top:3px solid #00eaff;
-
-border-radius:50%;
-
-width:25px;
-height:25px;
-
-margin:15px auto;
-
-animation:spin 0.7s linear infinite;
-
-}
-
-@keyframes spin{
-
-0%{transform:rotate(0)}
-100%{transform:rotate(360deg)}
-
-}
-
-.hidden{display:none}
 
 /* APP */
 
 .app{
-
-opacity:0;
-transform:scale(.97);
-transition:0.6s;
-
+display:none;
+height:100%;
 }
 
-.app.show{
-
-opacity:1;
-transform:scale(1);
-
-}
-
-/* SIDEBAR SUPER PROFISSIONAL */
+/* SIDEBAR */
 
 .sidebar{
 
 position:fixed;
+top:0;
 
 width:260px;
 height:100vh;
 
-background:rgba(5,10,20,0.9);
+background:rgba(5,10,20,0.92);
 
-backdrop-filter:blur(10px);
+backdrop-filter:blur(12px);
 
-padding:30px 20px;
+padding:18px 20px;
 
-border-right:1px solid rgba(0,200,255,0.15);
+border-right:1px solid rgba(0,200,255,0.2);
 
-box-shadow:5px 0 30px rgba(0,0,0,0.6);
+box-shadow:
+8px 0 40px rgba(0,0,0,0.7),
+inset -1px 0 0 rgba(0,200,255,0.15);
 
 }
 
@@ -243,47 +204,33 @@ box-shadow:5px 0 30px rgba(0,0,0,0.6);
 font-size:22px;
 font-weight:800;
 
-color:#00eaff;
+color:var(--cyan);
 
-margin-bottom:40px;
+margin-bottom:35px;
 
 letter-spacing:1px;
 
-text-shadow:0 0 10px rgba(0,200,255,0.6);
-
-}
-
-/* MENU */
-
-.menu{
-
-display:flex;
-flex-direction:column;
-gap:5px;
+text-shadow:
+0 0 10px rgba(0,200,255,0.6),
+0 0 20px rgba(0,200,255,0.4);
 
 }
 
 .menu a{
 
-display:flex;
-
-align-items:center;
-
-gap:10px;
-
-padding:12px 14px;
+display:block;
+padding:12px 15px;
+margin:6px 0;
 
 border-radius:8px;
 
 cursor:pointer;
 
-color:#cfd6e4;
-
-transition:0.25s;
-
 position:relative;
 
-font-weight:500;
+color:#cfcfcf;
+
+transition:.25s;
 
 }
 
@@ -291,20 +238,16 @@ font-weight:500;
 
 background:rgba(0,200,255,0.08);
 
-color:#00eaff;
+color:var(--cyan);
 
-transform:translateX(5px);
+transform:translateX(6px);
+
+box-shadow:inset 0 0 10px rgba(0,200,255,0.15);
 
 }
 
-/* ITEM ATIVO */
-
 .menu a.active{
-
-background:rgba(0,200,255,0.15);
-
-color:#00eaff;
-
+color:var(--cyan);
 }
 
 .menu a.active::before{
@@ -313,31 +256,24 @@ content:"";
 
 position:absolute;
 
-left:0;
-top:8px;
+left:-2px;
+top:6px;
 
 width:4px;
-height:24px;
+height:28px;
 
-background:#00eaff;
+border-radius:3px;
 
-border-radius:2px;
+background:linear-gradient(
+180deg,
+#00eaff,
+#008cff,
+#00eaff
+);
 
-box-shadow:0 0 10px #00eaff;
-
-}
-
-/* LOGOUT */
-
-.logout{
-
-position:absolute;
-
-bottom:25px;
-
-left:20px;
-
-width:80%;
+box-shadow:
+0 0 8px #00eaff,
+0 0 16px #00eaff;
 
 }
 
@@ -348,69 +284,92 @@ width:80%;
 position:fixed;
 
 left:260px;
+top:0;
 
 width:calc(100% - 260px);
+height:70px;
 
-height:65px;
-
-background:rgba(5,10,20,0.85);
-
-backdrop-filter:blur(10px);
-
-border-bottom:1px solid rgba(0,200,255,0.15);
+background:rgba(5,10,20,0.92);
 
 display:flex;
 align-items:center;
 
-padding-left:25px;
+padding:0 30px;
 
-font-weight:600;
-
-color:#00eaff;
+border-bottom:1px solid rgba(0,200,255,0.15);
 
 }
 
-/* CONTENT */
+.user{
+font-weight:600;
+color:var(--cyan);
+}
+
+/* CONTEUDO */
 
 .content{
 
 margin-left:260px;
-
 margin-top:90px;
 
-padding:30px;
+padding:40px;
+
+animation:fade .6s;
+
+}
+
+@keyframes fade{
+
+from{
+opacity:0;
+transform:translateY(10px);
+}
+
+to{
+opacity:1;
+transform:translateY(0);
+}
 
 }
 
 .card{
 
-background:rgba(10,20,30,0.65);
+background:rgba(13,31,23,0.6);
 
-padding:20px;
+backdrop-filter:blur(15px);
 
-border-radius:10px;
+padding:25px;
+
+border-radius:14px;
 
 margin-bottom:20px;
 
-border:1px solid rgba(0,200,255,0.1);
-
-transition:0.3s;
+transition:.3s;
 
 }
 
 .card:hover{
 
-transform:translateY(-3px);
+transform:translateY(-4px);
 
-box-shadow:0 0 10px rgba(0,200,255,0.3);
+box-shadow:0 0 12px var(--cyan);
 
 }
 
 .title{
-
-font-size:26px;
-font-weight:700;
+font-size:28px;
 margin-bottom:10px;
+}
+
+/* LOGOUT */
+
+.logout{
+
+position:absolute;
+
+bottom:30px;
+
+width:80%;
 
 }
 
@@ -418,8 +377,6 @@ margin-bottom:10px;
 </head>
 
 <body>
-
-<!-- LOGIN -->
 
 <div class="login" id="loginPage">
 
@@ -431,18 +388,15 @@ margin-bottom:10px;
 <input id="username" placeholder="Usuário">
 <input id="password" type="password" placeholder="Senha">
 
-<div id="loader" class="hidden"></div>
-
 <button onclick="login()">Entrar</button>
 
-<p id="msg" style="color:#ff4d4d;margin-top:10px;"></p>
+<p id="msg"></p>
 
 </div>
+
 </div>
 
-<!-- APP -->
-
-<div class="app hidden" id="app">
+<div class="app" id="app">
 
 <div class="sidebar">
 
@@ -451,8 +405,12 @@ margin-bottom:10px;
 <div class="menu">
 
 <a onclick="show('inicio')" class="active">🏠 Início</a>
+
 <a onclick="show('scripts')">📜 Scripts</a>
+
 <a onclick="show('tutorial')">📘 Tutorial</a>
+
+<a onclick="show('admin')">🛠 Admin</a>
 
 </div>
 
@@ -462,7 +420,7 @@ margin-bottom:10px;
 
 <div class="topbar">
 
-<span id="userDisplayTop"></span>
+<div class="user" id="userDisplay"></div>
 
 </div>
 
@@ -470,29 +428,49 @@ margin-bottom:10px;
 
 <div id="inicio">
 
+<div class="title">Início</div>
+
 <div class="card">
 
-<div class="title">Painel Principal</div>
+<p><b>NOVIDADES</b></p>
 
-<p>Seu painel profissional está funcionando.</p>
+<p>Scripts em desenvolvimento.</p>
+
+</div>
+
+<div class="card">
+
+Outro card exemplo.
 
 </div>
 
 </div>
 
-<div id="scripts" class="hidden">
+<div id="scripts" style="display:none">
 
 <div class="title">Scripts</div>
 
-<div class="card">Script exemplo</div>
+<div class="card">Nenhum script ainda.</div>
 
 </div>
 
-<div id="tutorial" class="hidden">
+<div id="tutorial" style="display:none">
 
 <div class="title">Tutorial</div>
 
-<div class="card">Como usar scripts</div>
+<div class="card">
+
+Como usar bookmarklet etc.
+
+</div>
+
+</div>
+
+<div id="admin" style="display:none">
+
+<div class="title">Admin</div>
+
+<div class="card">Painel admin futuramente.</div>
 
 </div>
 
@@ -502,68 +480,47 @@ margin-bottom:10px;
 
 <script>
 
-const username=document.getElementById("username")
-const password=document.getElementById("password")
+const loginPage=document.getElementById("loginPage");
+const app=document.getElementById("app");
 
-const loader=document.getElementById("loader")
-const msg=document.getElementById("msg")
+function login(){
 
-const loginPage=document.getElementById("loginPage")
-const app=document.getElementById("app")
+let u=username.value;
+let p=password.value;
 
-const userDisplayTop=document.getElementById("userDisplayTop")
+if(u==="NikolasP" && p==="2011"){
 
-async function login(){
+loginPage.style.display="none";
 
-loader.classList.remove("hidden")
+app.style.display="block";
 
-msg.innerText=""
-
-await new Promise(r=>setTimeout(r,700))
-
-if(username.value==="NikolasP" && password.value==="2011"){
-
-loader.classList.add("hidden")
-
-loginPage.classList.add("hidden")
-
-app.classList.remove("hidden")
-
-setTimeout(()=>{
-
-app.classList.add("show")
-
-},50)
-
-userDisplayTop.innerText=`Bem-vindo, ${username.value}`
+userDisplay.innerText="Bem-vindo, "+u;
 
 }else{
 
-loader.classList.add("hidden")
-
-msg.innerText="Usuário ou senha inválidos"
+msg.innerText="Usuário ou senha inválidos";
 
 }
 
 }
 
 function logout(){
-
-location.reload()
-
+location.reload();
 }
 
 function show(id){
 
-["inicio","scripts","tutorial"].forEach(x=>{
-document.getElementById(x).classList.add("hidden")
-})
+["inicio","scripts","tutorial","admin"].forEach(sec=>{
 
-document.getElementById(id).classList.remove("hidden")
+document.getElementById(sec).style.display="none";
 
-document.querySelectorAll(".menu a").forEach(x=>x.classList.remove("active"))
+});
 
-event.target.classList.add("active")
+document.getElementById(id).style.display="block";
+
+document.querySelectorAll(".menu a").forEach(a=>a.classList.remove("active"));
+
+event.target.classList.add("active");
 
 }
 
