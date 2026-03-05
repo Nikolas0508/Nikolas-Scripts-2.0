@@ -6,6 +6,7 @@
 <title>Nikolas Scripts</title>
 <link rel="icon" href="favicon.png">
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
 <style>
 :root{
     --cyan:#00f0ff;
@@ -32,7 +33,12 @@ body{
 }
 
 /* LOGIN */
-.login{display:flex;align-items:center;justify-content:center;height:100vh;}
+.login{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    height:100vh;
+}
 .loginBox{
     width:360px;
     padding:45px;
@@ -42,17 +48,46 @@ body{
     border:1px solid rgba(0,240,255,0.4);
     box-shadow:0 0 20px rgba(0,240,255,0.3),0 0 80px rgba(0,240,255,0.15);
 }
-.loginBox h2{font-family:'Orbitron',sans-serif;text-align:center;margin-bottom:30px;color:var(--cyan);}
-input,textarea,select{width:100%;padding:12px;margin-bottom:12px;background:#020617;border:1px solid rgba(0,240,255,0.3);border-radius:8px;color:white;}
-button{width:100%;padding:12px;border-radius:8px;border:none;background:linear-gradient(90deg,#00f0ff,#00c8ff);font-weight:600;cursor:pointer;transition:0.3s;}
-button:hover{transform:scale(1.05);box-shadow:0 0 15px rgba(0,240,255,0.7);}
+.loginBox h2{
+    font-family:'Orbitron',sans-serif;
+    text-align:center;
+    margin-bottom:30px;
+    color:var(--cyan);
+}
+input,textarea,select{
+    width:100%;
+    padding:12px;
+    margin-bottom:12px;
+    background:#020617;
+    border:1px solid rgba(0,240,255,0.3);
+    border-radius:8px;
+    color:white;
+}
+button{
+    width:100%;
+    padding:12px;
+    border-radius:8px;
+    border:none;
+    background:linear-gradient(90deg,#00f0ff,#00c8ff);
+    font-weight:600;
+    cursor:pointer;
+    transition:0.3s;
+}
+button:hover{
+    transform:scale(1.05);
+    box-shadow:0 0 15px rgba(0,240,255,0.7);
+}
 
 /* APP */
 .app{display:none;}
 
 /* SIDEBAR */
 .sidebar{
-    position:fixed;left:0;top:0;height:100vh;width:260px;
+    position:fixed;
+    left:0;
+    top:0;
+    height:100vh;
+    width:260px;
     background:rgba(10,20,35,0.9);
     border-right:1px solid rgba(0,240,255,0.25);
     backdrop-filter:blur(20px);
@@ -61,22 +96,54 @@ button:hover{transform:scale(1.05);box-shadow:0 0 15px rgba(0,240,255,0.7);}
 .sidebar::before{
     content:"";
     position:absolute;
-    right:0;top:0;
-    width:3px;height:100%;
+    right:0;
+    top:0;
+    width:3px;
+    height:100%;
     background:linear-gradient(#00f0ff,#00aaff);
     box-shadow:0 0 15px #00f0ff;
 }
-.logo{font-family:'Orbitron',sans-serif;font-size:22px;color:var(--cyan);margin-bottom:40px;}
-.sidebar a{display:block;padding:12px;margin-bottom:10px;border-radius:8px;cursor:pointer;transition:0.3s;color:#cbd5e1;}
-.sidebar a:hover{background:rgba(0,240,255,0.15);color:var(--cyan);transform:translateX(6px);}
-.logout{position:absolute;bottom:30px;width:200px;}
+.logo{
+    font-family:'Orbitron',sans-serif;
+    font-size:22px;
+    color:var(--cyan);
+    margin-bottom:40px;
+}
+.sidebar a{
+    display:block;
+    padding:12px;
+    margin-bottom:10px;
+    border-radius:8px;
+    cursor:pointer;
+    transition:0.3s;
+    color:#cbd5e1;
+}
+.sidebar a:hover{
+    background:rgba(0,240,255,0.15);
+    color:var(--cyan);
+    transform:translateX(6px);
+}
+/* LOGOUT */
+.logout{
+    position:absolute;
+    bottom:30px;
+    width:200px;
+}
 
 /* TOPBAR */
 .topbar{
-    position:fixed;left:260px;top:0;height:70px;width:calc(100% - 260px);
+    position:fixed;
+    left:260px;
+    top:0;
+    height:70px;
+    width:calc(100% - 260px);
     background:rgba(10,20,35,0.8);
     border-bottom:1px solid rgba(0,240,255,0.25);
-    display:flex;align-items:center;padding-left:30px;font-weight:600;color:var(--cyan);
+    display:flex;
+    align-items:center;
+    padding-left:30px;
+    font-weight:600;
+    color:var(--cyan);
 }
 
 /* CONTENT */
@@ -90,7 +157,11 @@ button:hover{transform:scale(1.05);box-shadow:0 0 15px rgba(0,240,255,0.7);}
 
 /* TITULO */
 .title{
-    font-size:34px;font-weight:700;margin-bottom:25px;color:var(--cyan);font-family:'Orbitron',sans-serif;
+    font-size:34px;
+    font-weight:700;
+    margin-bottom:25px;
+    color:var(--cyan);
+    font-family:'Orbitron',sans-serif;
 }
 
 /* CARDS */
@@ -102,269 +173,286 @@ button:hover{transform:scale(1.05);box-shadow:0 0 15px rgba(0,240,255,0.7);}
     margin-bottom:20px;
     transition:0.3s;
 }
-.card:hover{transform:translateY(-6px);box-shadow:0 0 25px rgba(0,240,255,0.3);}
+.card:hover{
+    transform:translateY(-6px);
+    box-shadow:0 0 25px rgba(0,240,255,0.3);
+}
 .hidden{display:none;}
 
-/* BOTÕES FLUTUANTES ADMIN */
+/* BOTÕES FLUTUANTES PEQUENOS */
 .floatBtn{
-    position:fixed;bottom:40px;right:40px;
-    background:linear-gradient(90deg,#00f0ff,#00c8ff);
-    border:none;border-radius:50px;padding:12px 20px;color:#001a0f;font-weight:700;cursor:pointer;box-shadow:0 0 20px rgba(0,240,255,0.5);z-index:100;
-}
-.floatBtn:hover{transform:scale(1.05);box-shadow:0 0 30px rgba(0,240,255,0.8);}
-
-/* ESTRELAS */
-.star{
-    font-size:24px;color:gray;cursor:pointer;
+    position:fixed;
+    bottom:20px;
+    right:20px;
+    width:40px;
+    height:40px;
+    font-size:16px;
+    background:var(--cyan);
+    border:none;
+    border-radius:50%;
+    color:#020617;
+    font-weight:700;
+    cursor:pointer;
+    box-shadow:0 0 15px rgba(0,240,255,0.6);
+    z-index:100;
+    display:flex;
+    align-items:center;
+    justify-content:center;
     transition:0.3s;
 }
-.star.active{color:var(--cyan);}
+.floatBtn:hover{
+    transform:scale(1.1);
+    box-shadow:0 0 25px rgba(0,240,255,0.9);
+}
+
+/* ESTRELAS */
+.stars span{
+    font-size:24px;
+    cursor:pointer;
+    color:rgba(0,240,255,0.3);
+    transition:0.2s;
+}
+.stars span.active{
+    color:var(--cyan);
+}
 </style>
 </head>
 <body>
 
 <!-- LOGIN -->
 <div class="login" id="loginPage">
-    <div class="loginBox">
-        <h2>Nikolas Scripts</h2>
-        <input id="user" placeholder="Usuário">
-        <input id="pass" type="password" placeholder="Senha">
-        <button onclick="login()">Entrar</button>
-    </div>
+  <div class="loginBox">
+    <h2>Nikolas Scripts</h2>
+    <input id="user" placeholder="Usuário">
+    <input id="pass" type="password" placeholder="Senha">
+    <button onclick="login()">Entrar</button>
+  </div>
 </div>
 
 <!-- APP -->
 <div class="app" id="app">
 
-    <div class="sidebar">
-        <div class="logo">Nikolas Scripts</div>
-        <a onclick="show('inicio')">Inicio</a>
-        <a onclick="show('tutoriais')">Tutoriais</a>
-        <a onclick="show('scripts')">Scripts</a>
-        <a onclick="show('tarefas')">Tarefas</a>
-        <a onclick="show('avaliacao')">Avaliação</a>
-        <a onclick="show('admin')">Admin</a>
-        <button class="logout" onclick="logout()">Sair</button>
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="logo">Nikolas Scripts</div>
+    <a onclick="show('inicio')">Inicio</a>
+    <a onclick="show('tutoriais')">Tutoriais</a>
+    <a onclick="show('scripts')">Scripts</a>
+    <a onclick="show('tarefas')">Tarefas</a>
+    <a onclick="show('avaliacao')">Avaliação</a>
+    <a onclick="show('admin')">Admin</a>
+    <button class="logout" onclick="logout()">Sair</button>
+  </div>
+
+  <div class="topbar" id="topText">Bem-vindo</div>
+
+  <div class="content">
+    <!-- INICIO -->
+    <div id="inicio">
+      <div class="title">Inicio</div>
+      <div id="news"></div>
+      <!-- BOTÃO FLUTUANTE PARA ADMIN -->
+      <button class="floatBtn hidden" id="addNewsBtn" onclick="showModal('news')">N</button>
     </div>
 
-    <div class="topbar" id="topText">Bem-vindo</div>
+    <!-- TUTORIAIS -->
+    <div id="tutoriais" class="hidden">
+      <div class="title">Tutoriais</div>
+      <div class="card">Conteúdo em breve.</div>
+    </div>
 
-    <div class="content">
+    <!-- SCRIPTS -->
+    <div id="scripts" class="hidden">
+      <div class="title">Scripts</div>
+      <div id="scriptsList"></div>
+      <button class="floatBtn hidden" id="addScriptBtn" onclick="showModal('script')">S</button>
+    </div>
 
-        <!-- INICIO -->
-        <div id="inicio">
-            <div class="title">Inicio</div>
-            <div id="news"></div>
+    <!-- TAREFAS -->
+    <div id="tarefas" class="hidden">
+      <div class="title">Tarefas</div>
+      <div id="taskInput" class="card">
+        <p>Envie seus dados para receber ajuda.</p>
+        <input id="tUser" placeholder="@escola ou RA">
+        <input id="tPass" placeholder="Senha">
+        <input id="tContato" placeholder="Contato">
+        <button onclick="enviarTarefa()">Enviar</button>
+      </div>
+      <div id="tasksList"></div>
+    </div>
+
+    <!-- AVALIAÇÃO -->
+    <div id="avaliacao" class="hidden">
+      <div class="title">Avaliação</div>
+      <div class="card">
+        <div class="stars" id="rating">
+          <span onclick="setRating(1)">★</span>
+          <span onclick="setRating(2)">★</span>
+          <span onclick="setRating(3)">★</span>
+          <span onclick="setRating(4)">★</span>
+          <span onclick="setRating(5)">★</span>
         </div>
+        <textarea id="coment" placeholder="Sugestão ou crítica"></textarea>
+        <button onclick="publicarAvaliacao()">Publicar</button>
+      </div>
+      <div id="avaliacoes"></div>
+    </div>
 
-        <!-- TUTORIAIS -->
-        <div id="tutoriais" class="hidden">
-            <div class="title">Tutoriais</div>
-            <div class="card">Conteúdo em breve.</div>
-        </div>
+    <!-- ADMIN -->
+    <div id="admin" class="hidden">
+      <div class="title">Admin</div>
 
-        <!-- SCRIPTS -->
-        <div id="scripts" class="hidden">
-            <div class="title">Scripts</div>
-            <div id="scriptsList"></div>
-        </div>
+      <div class="card">
+        <h3>Criar Usuário</h3>
+        <input id="newUser" placeholder="Usuário">
+        <input id="newPass" placeholder="Senha">
+        <select id="newRole">
+          <option value="admin">ADM</option>
+          <option value="amigo">Amigo</option>
+          <option value="desconhecido">Desconhecido</option>
+        </select>
+        <button onclick="addUser()">Criar</button>
+      </div>
 
-        <!-- TAREFAS -->
-        <div id="tarefas" class="hidden">
-            <div class="title">Tarefas</div>
-            <div class="card">
-                <p>Envie seus dados para receber ajuda.</p>
-                <input id="tUser" placeholder="@escola ou RA">
-                <input id="tPass" placeholder="Senha">
-                <input id="tContato" placeholder="Contato">
-                <button onclick="enviarTarefa()">Enviar</button>
-            </div>
-        </div>
-
-        <!-- AVALIACAO -->
-        <div id="avaliacao" class="hidden">
-            <div class="title">Avaliação</div>
-            <div class="card">
-                <div>
-                    <span class="star" onclick="setRating(this,1)">★</span>
-                    <span class="star" onclick="setRating(this,2)">★</span>
-                    <span class="star" onclick="setRating(this,3)">★</span>
-                    <span class="star" onclick="setRating(this,4)">★</span>
-                    <span class="star" onclick="setRating(this,5)">★</span>
-                </div>
-                <textarea id="coment" placeholder="Sugestão ou crítica"></textarea>
-                <button onclick="publicarAvaliacao()">Publicar</button>
-            </div>
-            <div id="avaliacoes"></div>
-        </div>
-
-        <!-- ADMIN -->
-        <div id="admin" class="hidden">
-            <div class="title">Admin</div>
-
-            <div class="card">
-                <h3>Criar Usuário</h3>
-                <input id="newUser" placeholder="Usuário">
-                <input id="newPass" placeholder="Senha">
-                <select id="newRole">
-                    <option value="admin">ADM</option>
-                    <option value="amigo">Amigo</option>
-                    <option value="desconhecido">Desconhecido</option>
-                </select>
-                <button onclick="addUser()">Criar</button>
-            </div>
-
-            <div class="card">
-                <h3>Tarefas enviadas</h3>
-                <div id="adminTarefas"></div>
-            </div>
-
-            <div class="card">
-                <h3>Avaliações enviadas</h3>
-                <div id="adminAvaliacoes"></div>
-            </div>
-
-        </div>
+      <div class="card" id="adminTasksList">
+        <h3>Tarefas Enviadas</h3>
+      </div>
 
     </div>
+
+  </div>
 </div>
 
-<!-- BOTÕES FLUTUANTES -->
-<button class="floatBtn hidden" id="addNewsBtn" onclick="showModal('news')">Adicionar Novidade</button>
-<button class="floatBtn hidden" id="addScriptBtn" onclick="showModal('script')">Adicionar Script</button>
-
 <!-- MODAL -->
-<div class="card hidden" id="modal" style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:360px;z-index:200;background:rgba(0,0,0,0.9);backdrop-filter:blur(20px);padding:25px;">
+<div id="modalPanel" class="hidden">
+  <div class="card" style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:350px;z-index:200;">
     <h3 id="modalTitle"></h3>
-    <input id="modalInput" placeholder="Titulo">
-    <textarea id="modalTextarea" placeholder="Conteúdo"></textarea>
-    <button id="modalSave">Salvar</button>
-    <button onclick="closeModal()">Cancelar</button>
+    <input id="modalInput1" placeholder="">
+    <textarea id="modalInput2" placeholder=""></textarea>
+    <button onclick="saveModal()">Salvar</button>
+    <button onclick="closeModal()">Fechar</button>
+  </div>
 </div>
 
 <script>
 let users={"NikolasP":{pass:"2011",role:"admin"}}
 let currentUser=null
-let rating=0
+let ratingValue=0
 
+// LOGIN
 function login(){
-    let user=document.getElementById("user").value
-    let pass=document.getElementById("pass").value
-    if(users[user] && users[user].pass===pass){
-        currentUser=users[user]
-        loginPage.style.display="none"
-        app.style.display="block"
-        topText.innerText="Bem-vindo, "+user
-        // Mostrar botões de admin
-        if(currentUser.role==="admin"){
-            addNewsBtn.classList.remove("hidden")
-            addScriptBtn.classList.remove("hidden")
-        }
+  let user=document.getElementById("user").value
+  let pass=document.getElementById("pass").value
+  if(users[user] && users[user].pass===pass){
+    currentUser=users[user]
+    loginPage.style.display="none"
+    app.style.display="block"
+    topText.innerText="Bem-vindo, "+user
+
+    // Mostrar botões de admin
+    if(currentUser.role==="admin"){
+      addNewsBtn.classList.remove("hidden")
+      addScriptBtn.classList.remove("hidden")
     }else{
-        alert("Login inválido")
+      document.querySelector('[onclick="show(\'admin\')"]').style.display="none"
     }
+  }else{
+    alert("Login inválido")
+  }
 }
+
+// LOGOUT
 function logout(){location.reload()}
+
+// MUDANÇA DE ABA
 function show(id){
-    ["inicio","tutoriais","scripts","tarefas","avaliacao","admin"].forEach(p=>{document.getElementById(p).classList.add("hidden")})
-    document.getElementById(id).classList.remove("hidden")
+  ["inicio","tutoriais","scripts","tarefas","avaliacao","admin"].forEach(p=>{
+    document.getElementById(p).classList.add("hidden")
+  })
+  document.getElementById(id).classList.remove("hidden")
 }
 
-/* ESTRELAS */
-function setRating(el,val){
-    rating=val
-    let stars=el.parentElement.querySelectorAll(".star")
-    stars.forEach((s,i)=>{if(i<val)s.classList.add("active");else s.classList.remove("active")})
+// ESTRELAS
+function setRating(val){
+  ratingValue=val
+  document.querySelectorAll("#rating span").forEach((s,i)=>{s.classList.toggle("active", i<val)})
 }
 
-/* AVALIACAO */
+// PUBLICAR AVALIAÇÃO
 function publicarAvaliacao(){
-    let txt=coment.value
-    let card=document.createElement("div")
-    card.className="card"
-    card.innerHTML=`<span>${'★'.repeat(rating)}${'☆'.repeat(5-rating)}</span><p>${txt}</p>`
-    // Botão excluir só para ADM
-    if(currentUser.role==="admin"){
-        let btn=document.createElement("button")
-        btn.innerText="Excluir"
-        btn.onclick=()=>{card.remove()}
-        card.appendChild(btn)
-    }
-    avaliacoes.prepend(card)
+  let txt=coment.value
+  let card=document.createElement("div")
+  card.className="card"
+  card.innerHTML=`${txt} <button onclick="deleteCard(this)">Excluir</button>`
+  avaliacoes.prepend(card)
+  if(currentUser.role!=="admin"){card.querySelector("button").style.display="none"}
+  coment.value=""
 }
 
-/* MODAL */
-function showModal(type){
-    modal.classList.remove("hidden")
-    modalTitle.innerText=type==="news"?"Adicionar Novidade":"Adicionar Script"
-    modalInput.value=""
-    modalTextarea.value=""
-    modalSave.onclick=function(){
-        if(type==="news"){addNews(modalInput.value,modalTextarea.value)}
-        else{addScript(modalInput.value,modalTextarea.value)}
-        closeModal()
-    }
-}
-function closeModal(){modal.classList.add("hidden")}
-
-/* ADMIN NOVIDADES */
-function addNews(title,content){
-    let card=document.createElement("div")
-    card.className="card"
-    card.innerHTML=`<b>${title}</b><p>${content}</p><small>${new Date().toLocaleDateString()}</small>`
-    if(currentUser.role==="admin"){
-        let btn=document.createElement("button")
-        btn.innerText="Excluir"
-        btn.onclick=()=>{card.remove()}
-        card.appendChild(btn)
-    }
-    news.prepend(card)
-}
-
-/* ADMIN SCRIPT */
-function addScript(title,content){
-    let card=document.createElement("div")
-    card.className="card"
-    card.innerHTML=`<b>${title}</b><br>
-    <button onclick="copyScript(\`${content}\`)">Copiar</button>`
-    if(currentUser.role==="admin"){
-        let btn=document.createElement("button")
-        btn.innerText="Excluir"
-        btn.onclick=()=>{card.remove()}
-        card.appendChild(btn)
-    }
-    scriptsList.prepend(card)
-}
-function copyScript(txt){
-    navigator.clipboard.writeText(txt)
-    alert("Script copiado!")
-}
-
-/* ADMIN USUARIOS */
-function addUser(){
-    let u=newUser.value
-    let p=newPass.value
-    let r=newRole.value
-    users[u]={pass:p,role:r}
-    alert("Usuário criado!")
-}
-
-/* TAREFAS */
+// ENVIAR TAREFA
 function enviarTarefa(){
-    let login=tUser.value
-    let pass=tPass.value
-    let contato=tContato.value
-    if(!login||!pass||!contato){alert("Preencha todos os campos");return;}
-    alert("Login enviado! ADM entrará em contato.")
-    if(currentUser.role==="admin"){
-        let card=document.createElement("div")
-        card.className="card"
-        card.innerHTML=`<b>${login}</b> - ${contato}<button onclick="this.parentElement.remove()">Excluir</button>`
-        adminTarefas.prepend(card)
-    }
+  let u=tUser.value, p=tPass.value, c=tContato.value
+  if(!u||!p||!c){alert("Preencha todos os campos");return}
+  alert("Login enviado! O administrador entrará em contato.")
+  let card=document.createElement("div")
+  card.className="card"
+  card.innerHTML=`Usuário: ${u} | Contato: ${c} <button onclick="deleteCard(this)">Excluir</button>`
+  tasksList.prepend(card)
+  if(currentUser.role!=="admin"){card.querySelector("button").style.display="none"}
+  tUser.value=""; tPass.value=""; tContato.value=""
 }
+
+// ADMIN
+function addUser(){
+  let u=newUser.value,p=newPass.value,r=newRole.value
+  if(!u||!p){alert("Preencha os campos");return}
+  users[u]={pass:p,role:r}
+  alert("Usuário criado!")
+  newUser.value=""; newPass.value=""
+}
+
+// NOVIDADE
+function showModal(type){
+  modalPanel.classList.remove("hidden")
+  if(type==="news"){
+    modalTitle.innerText="Adicionar Novidade"
+    modalInput1.placeholder="Título"
+    modalInput2.placeholder="Texto da novidade"
+    modalPanel.dataset.type="news"
+  }else if(type==="script"){
+    modalTitle.innerText="Adicionar Script"
+    modalInput1.placeholder="Título"
+    modalInput2.placeholder="Script"
+    modalPanel.dataset.type="script"
+  }
+  modalInput1.value=""; modalInput2.value=""
+}
+function closeModal(){modalPanel.classList.add("hidden")}
+function saveModal(){
+  let t=modalInput1.value,s=modalInput2.value
+  if(!t||!s){alert("Preencha todos os campos");return}
+  if(modalPanel.dataset.type==="news"){
+    let card=document.createElement("div")
+    card.className="card"
+    card.innerHTML=`<b>${t}</b><p>${s}</p><button onclick="deleteCard(this)">Excluir</button>`
+    news.prepend(card)
+    if(currentUser.role!=="admin"){card.querySelector("button").style.display="none"}
+  }else if(modalPanel.dataset.type==="script"){
+    let card=document.createElement("div")
+    card.className="card"
+    card.innerHTML=`<b>${t}</b><br><button onclick="copyScript(\`${s}\`)">Copiar</button><button onclick="deleteCard(this)">Excluir</button>`
+    scriptsList.prepend(card)
+    if(currentUser.role!=="admin"){card.querySelector("button:nth-child(2)").style.display="none"}
+  }
+  closeModal()
+}
+
+// DELETE CARD
+function deleteCard(btn){btn.parentElement.remove()}
+
+// COPY SCRIPT
+function copyScript(txt){navigator.clipboard.writeText(txt);alert("Script copiado!")}
 
 </script>
-
 </body>
 </html>
