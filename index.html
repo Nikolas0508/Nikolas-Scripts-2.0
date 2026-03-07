@@ -342,9 +342,30 @@ async function carregarScripts(){
     const card=document.createElement("div");
     card.className="card";
 
-    card.innerHTML=`
-      <h4>${d.title}</h4>
-      <pre>${d.code}</pre>
+    card.innerHTML = `
+  <b>${d.title}</b>
+
+  <div class="script-box" id="script-${id}">
+${d.script}
+  </div>
+
+  <div class="card-buttons">
+
+    <button 
+      class="copy-btn"
+      onclick="copiarScript('${id}', this)"
+    >
+      Copiar Script
+    </button>
+
+    ${currentUser.role==="admin" ? `
+      <button onclick="excluirDoc('scripts','${id}')">
+        Excluir
+      </button>
+    ` : ""}
+
+  </div>
+`;
 
       ${currentUser.role==="admin" ? `
       <div class="card-buttons">
@@ -448,6 +469,51 @@ async function carregarFeedbacks(){
   });
 
 }
+
+window.copiarScript = async function(id, btn){
+
+  try{
+
+    const scriptBox = document.getElementById("script-"+id);
+
+    if(!scriptBox){
+      console.error("Script não encontrado");
+      return;
+    }
+
+    const texto = scriptBox.innerText;
+
+    if(!texto || texto.trim()===""){
+      alert("Script vazio");
+      return;
+    }
+
+    await navigator.clipboard.writeText(texto);
+
+    const textoOriginal = btn.innerText;
+
+    btn.innerText = "Copiado!";
+    btn.classList.add("copied");
+
+    btn.disabled = true;
+
+    setTimeout(()=>{
+
+      btn.innerText = textoOriginal;
+      btn.classList.remove("copied");
+      btn.disabled = false;
+
+    },2000);
+
+  }catch(err){
+
+    console.error("Erro ao copiar:",err);
+
+    alert("Não foi possível copiar o script.");
+
+  }
+
+};
 
 </script>
 </body>
