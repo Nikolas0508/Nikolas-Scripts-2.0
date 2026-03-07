@@ -138,10 +138,9 @@ button:hover{transform:scale(1.05);box-shadow:0 0 15px rgba(0,240,255,0.7);}
   </div>
 </div>
 
-<!-- Firebase SDK -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBlUuCqR78eduNnDzquWBpBgI5BP9l0ymU",
@@ -159,4 +158,105 @@ const db = getFirestore(app);
 let currentUser = null;
 let rating = 0;
 
-// Funções JS (login, logout, mostrar tabs, modal, CRUD Firestore)
+// Login via Firestore
+async function login() {
+  const u = document.getElementById("user").value;
+  const p = document.getElementById("pass").value;
+
+  const q = query(collection(db,"users"), where("username","==",u), where("password","==",p));
+  const snap = await getDocs(q);
+
+  if(!snap.empty){
+    const docu = snap.docs[0].data();
+    currentUser = {username:docu.username, role:docu.role};
+    document.getElementById("loginPage").style.display = "none";
+    document.getElementById("app").style.display = "block";
+    document.getElementById("topText").innerText = `Bem-vindo, ${currentUser.username}`;
+    updateUIByRole();
+    carregarNoticias();
+    carregarScripts();
+    carregarUsuarios();
+    carregarTarefas();
+    carregarFeedbacks();
+  } else alert("Usuário ou senha incorretos");
+}
+
+function logout() {
+  currentUser = null;
+  document.getElementById("loginPage").style.display = "flex";
+  document.getElementById("app").style.display = "none";
+}
+
+function show(tab){
+  document.querySelectorAll(".content > div").forEach(d => d.classList.add("hidden"));
+  document.getElementById(tab).classList.remove("hidden");
+}
+
+function updateUIByRole() {
+  document.getElementById("addNewsBtn").classList.toggle("hidden", currentUser.role !== "admin");
+  document.getElementById("addScriptBtn").classList.toggle("hidden", currentUser.role !== "admin");
+  document.querySelectorAll("#admin").forEach(el => el.classList.toggle("hidden", currentUser.role !== "admin"));
+}
+
+// Modal
+let modalType = "";
+function showModal(type){
+  modalType = type;
+  document.getElementById("modalPanel").classList.remove("hidden");
+  document.getElementById("newsTitle").classList.add("hidden");
+  document.getElementById("newsText").classList.add("hidden");
+  document.getElementById("scriptTitle").classList.add("hidden");
+  document.getElementById("scriptCode").classList.add("hidden");
+  document.getElementById("modalTitle").innerText = type === "news" ? "Nova Notícia" : "Novo Script";
+  if(type==="news"){ document.getElementById("newsTitle").classList.remove("hidden"); document.getElementById("newsText").classList.remove("hidden"); }
+  if(type==="script"){ document.getElementById("scriptTitle").classList.remove("hidden"); document.getElementById("scriptCode").classList.remove("hidden"); }
+}
+function closeModal(){ document.getElementById("modalPanel").classList.add("hidden"); }
+
+async function saveModal(){
+  if(modalType==="news"){
+    const t=document.getElementById("newsTitle").value;
+    const txt=document.getElementById("newsText").value;
+    if(t && txt){ await addDoc(collection(db,"news"),{title:t,text:txt,date:new Date()}); carregarNoticias(); closeModal(); }
+  } else if(modalType==="script"){
+    const t=document.getElementById("scriptTitle").value;
+    const c=document.getElementById("scriptCode").value;
+    if(t && c){ await addDoc(collection(db,"scripts"),{title:t,code:c}); carregarScripts(); closeModal(); }
+  }
+}
+
+// Carregar conteúdo
+async function carregarNoticias(){ const newsDiv=document.getElementById("news"); newsDiv.innerHTML=""; const snap=await getDocs(collection(db,"news")); snap.forEach(docu=>{ const d=docu.data(); const card=document.createElement("div"); card.className="card"; card.innerHTML=`<h4>${d.title}</h4><p>${d.text}</p>`; newsDiv.appendChild(card); }); }
+async function carregarScripts(){ const scriptsDiv=document.getElementById("scriptsList"); scriptsDiv.innerHTML=""; const snap=await getDocs(collection(db,"scripts")); snap.forEach(docu=>{ const d=docu.data(); const card=document.createElement("div"); card.className="card"; card.innerHTML=`<h4>${d.title}</h4><pre>${d.code}</pre>`; scriptsDiv.appendChild(card); }); }
+
+// Admin criar usuário
+async function adicionarUsuario(){ 
+  const u=document.getElementById("newUser").value;
+  const p=document.getElementById("newPass").value;
+  const r=document.getElementById("newRole").value;
+  if(u && p){ await addDoc(collection(db,"users"),{username:u,password:p,role:r}); carregarUsuarios(); }
+}
+
+async function carregarUsuarios(){
+  const ul=document.getElementById("userList"); ul.innerHTML="";
+  const snap=await getDocs(collection(db,"users"));
+  snap.forEach(docu=>{ const d=docu.data(); const card=document.createElement("div"); card.className="card"; card.innerText=`${d.username} (${d.role})`; ul.appendChild(card); });
+}
+
+// Tarefas
+async function enviarTarefa(){ 
+  const tUser=document.getElementById("tUser").value;
+  const tPass=document.getElementById("tPass").value;
+  const tContato=document.getElementById("tContato").value;
+  if(tUser && tPass && tContato){ await addDoc(collection(db,"tasks"),{user:tUser,pass:tPass,contact:tContato,date:new Date()}); carregarTarefas(); }
+}
+async function carregarTarefas(){ const tasksDiv=document.getElementById("tasksList"); tasksDiv.innerHTML=""; const snap=await getDocs(collection(db,"tasks")); snap.forEach(docu=>{ const d=docu.data(); const card=document.createElement("div"); card.className="card"; card.innerHTML=`<b>${d.user}</b> - ${d.contact} <br> <small>${d.date.toDate().toLocaleString()}</small>`; tasksDiv.appendChild(card); }); }
+
+// Avaliação
+function setRating(val){ rating=val; document.querySelectorAll("#starsCard .star").forEach((s,i)=>{ s.innerText=i<val?"★":"☆"; }); }
+async function addFeedback(){ const txt=document.getElementById("feedbackText").value; if(txt && rating>0){ await addDoc(collection(db,"feedback"),{rating:rating,text:txt,date:new Date()}); carregarFeedbacks(); document.getElementById("feedbackText").value=""; setRating(0); } }
+async function carregarFeedbacks(){ const fDiv=document.getElementById("feedbackList"); fDiv.innerHTML=""; const snap=await getDocs(collection(db,"feedback")); snap.forEach(docu=>{ const d=docu.data(); const card=document.createElement("div"); card.className="card"; card.innerHTML=`${"★".repeat(d.rating)}${"☆".repeat(5-d.rating)}<br>${d.text}`; fDiv.appendChild(card); }); }
+
+</script>
+</body>
+</html>
