@@ -32,6 +32,8 @@ button:hover{transform:scale(1.05);box-shadow:0 0 15px rgba(0,240,255,0.7);}
 .floatBtn{position:fixed;bottom:20px;right:20px;width:40px;height:40px;background:var(--cyan);border-radius:50%;color:#020617;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;}
 .card-buttons{display:flex;gap:20px;margin-top:15px;}
 .card-buttons button{flex:1;padding:12px;font-size:16px;}
+.deleteBtn{margin-top:10px;padding:6px 12px;background:#ff0044;border:none;border-radius:6px;cursor:pointer;transition:0.2s;}
+.deleteBtn:hover{background:#ff3366;}
 </style>
 </head>
 <body>
@@ -60,24 +62,28 @@ button:hover{transform:scale(1.05);box-shadow:0 0 15px rgba(0,240,255,0.7);}
   <div class="topbar" id="topText">Bem-vindo</div>
 
   <div class="content">
+    <!-- INICIO -->
     <div id="inicio">
       <div class="title">Inicio</div>
       <div id="news"></div>
       <button class="floatBtn hidden" id="addNewsBtn" onclick="showModal('news')">N</button>
     </div>
 
+    <!-- AJUDA -->
     <div id="ajuda" class="hidden">
       <div class="title">Ajuda</div>
       <div class="card">Como copiar scripts: clique em copiar.</div>
       <div class="card">Como enviar tarefas: use a aba tarefas.</div>
     </div>
 
+    <!-- SCRIPTS -->
     <div id="scripts" class="hidden">
       <div class="title">Scripts</div>
       <div id="scriptsList"></div>
       <button class="floatBtn hidden" id="addScriptBtn" onclick="showModal('script')">S</button>
     </div>
 
+    <!-- TAREFAS -->
     <div id="tarefas" class="hidden">
       <div class="title">Tarefas</div>
       <div class="card"><b>Instruções:</b> Coloque seu login escolar e um método de contato. O administrador entrará em contato.</div>
@@ -90,6 +96,7 @@ button:hover{transform:scale(1.05);box-shadow:0 0 15px rgba(0,240,255,0.7);}
       <div id="tasksList"></div>
     </div>
 
+    <!-- AVALIACAO -->
     <div id="avaliacao" class="hidden">
       <div class="title">Avaliação</div>
       <div class="card" id="starsCard">
@@ -104,8 +111,11 @@ button:hover{transform:scale(1.05);box-shadow:0 0 15px rgba(0,240,255,0.7);}
       <div id="feedbackList"></div>
     </div>
 
+    <!-- ADMIN -->
     <div id="admin" class="hidden">
       <div class="title">Admin</div>
+
+      <!-- ADICIONAR USUARIO -->
       <div class="card" style="background:linear-gradient(135deg,#001f2f,#003355);border:2px solid #00f0ff;box-shadow:0 0 15px #00f0ff;padding:25px;border-radius:15px;transition:0.3s;">
         <h3 style="font-family:'Orbitron',sans-serif;color:#00f0ff;margin-bottom:15px;text-align:center;text-shadow:0 0 8px #00f0ff;">Adicionar Usuários</h3>
         <input id="newUser" placeholder="Nome do usuário">
@@ -139,7 +149,7 @@ button:hover{transform:scale(1.05);box-shadow:0 0 15px rgba(0,240,255,0.7);}
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, query, where, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBlUuCqR78eduNnDzquWBpBgI5BP9l0ymU",
@@ -157,6 +167,7 @@ const db = getFirestore(app);
 let currentUser = null;
 let rating = 0;
 
+// LOGIN
 async function login() {
   const u = document.getElementById("user").value;
   const p = document.getElementById("pass").value;
@@ -177,24 +188,27 @@ async function login() {
   } else alert("Usuário ou senha incorretos");
 }
 
+// LOGOUT
 function logout() {
   currentUser = null;
   document.getElementById("loginPage").style.display = "flex";
   document.getElementById("app").style.display = "none";
 }
 
+// ABAS
 function show(tab){
   document.querySelectorAll(".content > div").forEach(d => d.classList.add("hidden"));
   document.getElementById(tab).classList.remove("hidden");
 }
 
+// UI POR ROLE
 function updateUIByRole() {
   document.getElementById("addNewsBtn").classList.toggle("hidden", currentUser.role !== "admin");
   document.getElementById("addScriptBtn").classList.toggle("hidden", currentUser.role !== "admin");
   document.querySelectorAll("#admin").forEach(el => el.classList.toggle("hidden", currentUser.role !== "admin"));
 }
 
-// Modal
+// MODAL
 let modalType = "";
 function showModal(type){
   modalType = type;
@@ -203,7 +217,7 @@ function showModal(type){
   document.getElementById("newsText").classList.add("hidden");
   document.getElementById("scriptTitle").classList.add("hidden");
   document.getElementById("scriptCode").classList.add("hidden");
-  document.getElementById("modalTitle").innerText = type === "news" ? "Nova Notícia" : "Novo Script";
+  document.getElementById("modalTitle").innerText = type==="news"?"Nova Notícia":"Novo Script";
   if(type==="news"){ document.getElementById("newsTitle").classList.remove("hidden"); document.getElementById("newsText").classList.remove("hidden"); }
   if(type==="script"){ document.getElementById("scriptTitle").classList.remove("hidden"); document.getElementById("scriptCode").classList.remove("hidden"); }
 }
@@ -221,7 +235,7 @@ async function saveModal(){
   }
 }
 
-// Expor funções para HTML
+// EXPOR FUNCOES
 window.login = login;
 window.logout = logout;
 window.show = show;
@@ -229,6 +243,7 @@ window.showModal = showModal;
 window.closeModal = closeModal;
 window.saveModal = saveModal;
 
+// USUARIOS
 window.adicionarUsuario = async function() {
   const u=document.getElementById("newUser").value;
   const p=document.getElementById("newPass").value;
@@ -236,6 +251,7 @@ window.adicionarUsuario = async function() {
   if(u && p){ await addDoc(collection(db,"users"),{username:u,password:p,role:r}); carregarUsuarios(); }
 };
 
+// TAREFAS
 window.enviarTarefa = async function(){
   const tUser=document.getElementById("tUser").value;
   const tPass=document.getElementById("tPass").value;
@@ -243,20 +259,40 @@ window.enviarTarefa = async function(){
   if(tUser && tPass && tContato){ await addDoc(collection(db,"tasks"),{user:tUser,pass:tPass,contact:tContato,date:new Date()}); carregarTarefas(); }
 };
 
+// AVALIACAO
 window.setRating = function(val){ rating=val; document.querySelectorAll("#starsCard .star").forEach((s,i)=>{ s.innerText=i<val?"★":"☆"; }); };
-
 window.addFeedback = async function(){ 
   const txt=document.getElementById("feedbackText").value;
   if(txt && rating>0){ await addDoc(collection(db,"feedback"),{rating:rating,text:txt,date:new Date()}); carregarFeedbacks(); document.getElementById("feedbackText").value=""; setRating(0); }
 };
 
-// Carregar conteúdo
-async function carregarNoticias(){ const newsDiv=document.getElementById("news"); newsDiv.innerHTML=""; const snap=await getDocs(collection(db,"news")); snap.forEach(docu=>{ const d=docu.data(); const card=document.createElement("div"); card.className="card"; card.innerHTML=`<h4>${d.title}</h4><p>${d.text}</p>`; newsDiv.appendChild(card); }); }
-async function carregarScripts(){ const scriptsDiv=document.getElementById("scriptsList"); scriptsDiv.innerHTML=""; const snap=await getDocs(collection(db,"scripts")); snap.forEach(docu=>{ const d=docu.data(); const card=document.createElement("div"); card.className="card"; card.innerHTML=`<h4>${d.title}</h4><pre>${d.code}</pre>`; scriptsDiv.appendChild(card); }); }
-async function carregarUsuarios(){ const ul=document.getElementById("userList"); ul.innerHTML=""; const snap=await getDocs(collection(db,"users")); snap.forEach(docu=>{ const d=docu.data(); const card=document.createElement("div"); card.className="card"; card.innerText=`${d.username} (${d.role})`; ul.appendChild(card); }); }
-async function carregarTarefas(){ const tasksDiv=document.getElementById("tasksList"); tasksDiv.innerHTML=""; const snap=await getDocs(collection(db,"tasks")); snap.forEach(docu=>{ const d=docu.data(); const card=document.createElement("div"); card.className="card"; card.innerHTML=`<b>${d.user}</b> - ${d.contact} <br> <small>${d.date.toDate().toLocaleString()}</small>`; tasksDiv.appendChild(card); }); }
-async function carregarFeedbacks(){ const fDiv=document.getElementById("feedbackList"); fDiv.innerHTML=""; const snap=await getDocs(collection(db,"feedback")); snap.forEach(docu=>{ const d=docu.data(); const card=document.createElement("div"); card.className="card"; card.innerHTML=`${"★".repeat(d.rating)}${"☆".repeat(5-d.rating)}<br>${d.text}`; fDiv.appendChild(card); }); }
+// EXCLUIR FUNCOES
+async function excluirNoticia(id){ if(currentUser.role!=="admin") return; await deleteDoc(doc(db,"news",id)); carregarNoticias(); }
+async function excluirScript(id){ if(currentUser.role!=="admin") return; await deleteDoc(doc(db,"scripts",id)); carregarScripts(); }
+async function excluirTarefa(id){ if(currentUser.role!=="admin") return; await deleteDoc(doc(db,"tasks",id)); carregarTarefas(); }
+async function excluirFeedback(id){ if(currentUser.role!=="admin") return; await deleteDoc(doc(db,"feedback",id)); carregarFeedbacks(); }
+async function excluirUsuario(id){ if(currentUser.role!=="admin") return; await deleteDoc(doc(db,"users",id)); carregarUsuarios(); }
 
-</script>
-</body>
-</html>
+// CARREGAR CONTEUDO
+async function carregarNoticias(){
+  const newsDiv=document.getElementById("news"); newsDiv.innerHTML="";
+  const snap=await getDocs(collection(db,"news"));
+  snap.forEach(docu=>{
+    const d=docu.data();
+    const card=document.createElement("div");
+    card.className="card";
+    card.innerHTML=`<h4>${d.title}</h4><p>${d.text}</p>${currentUser.role==="admin"?`<button class="deleteBtn" onclick="excluirNoticia('${docu.id}')">Excluir</button>`:""}`;
+    newsDiv.appendChild(card);
+  });
+}
+
+async function carregarScripts(){
+  const scriptsDiv=document.getElementById("scriptsList"); scriptsDiv.innerHTML="";
+  const snap=await getDocs(collection(db,"scripts"));
+  snap.forEach(docu=>{
+    const d=docu.data();
+    const card=document.createElement("div");
+    card.className="card";
+    card.innerHTML=`<h4>${d.title}</h4><pre>${d.code}</pre>${currentUser.role==="admin"?`<button class="deleteBtn" onclick="excluirScript('${docu.id}')">Excluir</button>`:""}`;
+    scriptsDiv.appendChild(card);
+ 
