@@ -139,7 +139,7 @@ button:hover{transform:scale(1.05);box-shadow:0 0 15px rgba(0,240,255,0.7);}
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, query, where, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBlUuCqR78eduNnDzquWBpBgI5BP9l0ymU",
@@ -250,12 +250,176 @@ window.addFeedback = async function(){
   if(txt && rating>0){ await addDoc(collection(db,"feedback"),{rating:rating,text:txt,date:new Date()}); carregarFeedbacks(); document.getElementById("feedbackText").value=""; setRating(0); }
 };
 
+window.excluirDoc = async function(collectionName,id){
+
+  if(currentUser.role !== "admin") return;
+
+  if(confirm("Tem certeza que deseja excluir?")){
+
+    await deleteDoc(doc(db, collectionName, id));
+
+    if(collectionName==="news") carregarNoticias();
+    if(collectionName==="scripts") carregarScripts();
+    if(collectionName==="users") carregarUsuarios();
+    if(collectionName==="tasks") carregarTarefas();
+    if(collectionName==="feedback") carregarFeedbacks();
+
+  }
+
+};
+
 // Carregar conteúdo
-async function carregarNoticias(){ const newsDiv=document.getElementById("news"); newsDiv.innerHTML=""; const snap=await getDocs(collection(db,"news")); snap.forEach(docu=>{ const d=docu.data(); const card=document.createElement("div"); card.className="card"; card.innerHTML=`<h4>${d.title}</h4><p>${d.text}</p>`; newsDiv.appendChild(card); }); }
-async function carregarScripts(){ const scriptsDiv=document.getElementById("scriptsList"); scriptsDiv.innerHTML=""; const snap=await getDocs(collection(db,"scripts")); snap.forEach(docu=>{ const d=docu.data(); const card=document.createElement("div"); card.className="card"; card.innerHTML=`<h4>${d.title}</h4><pre>${d.code}</pre>`; scriptsDiv.appendChild(card); }); }
-async function carregarUsuarios(){ const ul=document.getElementById("userList"); ul.innerHTML=""; const snap=await getDocs(collection(db,"users")); snap.forEach(docu=>{ const d=docu.data(); const card=document.createElement("div"); card.className="card"; card.innerText=`${d.username} (${d.role})`; ul.appendChild(card); }); }
-async function carregarTarefas(){ const tasksDiv=document.getElementById("tasksList"); tasksDiv.innerHTML=""; const snap=await getDocs(collection(db,"tasks")); snap.forEach(docu=>{ const d=docu.data(); const card=document.createElement("div"); card.className="card"; card.innerHTML=`<b>${d.user}</b> - ${d.contact} <br> <small>${d.date.toDate().toLocaleString()}</small>`; tasksDiv.appendChild(card); }); }
-async function carregarFeedbacks(){ const fDiv=document.getElementById("feedbackList"); fDiv.innerHTML=""; const snap=await getDocs(collection(db,"feedback")); snap.forEach(docu=>{ const d=docu.data(); const card=document.createElement("div"); card.className="card"; card.innerHTML=`${"★".repeat(d.rating)}${"☆".repeat(5-d.rating)}<br>${d.text}`; fDiv.appendChild(card); }); }
+async function carregarNoticias(){
+
+  const newsDiv=document.getElementById("news");
+  newsDiv.innerHTML="";
+
+  const snap=await getDocs(collection(db,"news"));
+
+  snap.forEach(docu=>{
+
+    const d=docu.data();
+    const id=docu.id;
+
+    const card=document.createElement("div");
+    card.className="card";
+
+    card.innerHTML=`
+      <h4>${d.title}</h4>
+      <p>${d.text}</p>
+
+      ${currentUser.role==="admin" ? `
+      <div class="card-buttons">
+        <button onclick="excluirDoc('news','${id}')">Excluir</button>
+      </div>` : ""}
+    `;
+
+    newsDiv.appendChild(card);
+
+  });
+
+}
+async function carregarScripts(){
+
+  const scriptsDiv=document.getElementById("scriptsList");
+  scriptsDiv.innerHTML="";
+
+  const snap=await getDocs(collection(db,"scripts"));
+
+  snap.forEach(docu=>{
+
+    const d=docu.data();
+    const id=docu.id;
+
+    const card=document.createElement("div");
+    card.className="card";
+
+    card.innerHTML=`
+      <h4>${d.title}</h4>
+      <pre>${d.code}</pre>
+
+      ${currentUser.role==="admin" ? `
+      <div class="card-buttons">
+        <button onclick="excluirDoc('scripts','${id}')">Excluir</button>
+      </div>` : ""}
+    `;
+
+    scriptsDiv.appendChild(card);
+
+  });
+
+}
+async function carregarUsuarios(){
+
+  const ul=document.getElementById("userList");
+  ul.innerHTML="";
+
+  const snap=await getDocs(collection(db,"users"));
+
+  snap.forEach(docu=>{
+
+    const d=docu.data();
+    const id=docu.id;
+
+    const card=document.createElement("div");
+    card.className="card";
+
+    card.innerHTML=`
+      ${d.username} (${d.role})
+
+      ${currentUser.role==="admin" ? `
+      <div class="card-buttons">
+        <button onclick="excluirDoc('users','${id}')">Excluir</button>
+      </div>` : ""}
+    `;
+
+    ul.appendChild(card);
+
+  });
+
+}
+async function carregarTarefas(){
+
+  const tasksDiv=document.getElementById("tasksList");
+  tasksDiv.innerHTML="";
+
+  const snap=await getDocs(collection(db,"tasks"));
+
+  snap.forEach(docu=>{
+
+    const d=docu.data();
+    const id=docu.id;
+
+    const card=document.createElement("div");
+    card.className="card";
+
+    card.innerHTML=`
+      <b>${d.user}</b> - ${d.contact}
+      <br>
+      <small>${d.date.toDate().toLocaleString()}</small>
+
+      ${currentUser.role==="admin" ? `
+      <div class="card-buttons">
+        <button onclick="excluirDoc('tasks','${id}')">Excluir</button>
+      </div>` : ""}
+    `;
+
+    tasksDiv.appendChild(card);
+
+  });
+
+}
+async function carregarFeedbacks(){
+
+  const fDiv=document.getElementById("feedbackList");
+  fDiv.innerHTML="";
+
+  const snap=await getDocs(collection(db,"feedback"));
+
+  snap.forEach(docu=>{
+
+    const d=docu.data();
+    const id=docu.id;
+
+    const card=document.createElement("div");
+    card.className="card";
+
+    card.innerHTML=`
+      ${"★".repeat(d.rating)}${"☆".repeat(5-d.rating)}
+      <br>
+      ${d.text}
+
+      ${currentUser.role==="admin" ? `
+      <div class="card-buttons">
+        <button onclick="excluirDoc('feedback','${id}')">Excluir</button>
+      </div>` : ""}
+    `;
+
+    fDiv.appendChild(card);
+
+  });
+
+}
 
 </script>
 </body>
