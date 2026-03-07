@@ -80,7 +80,7 @@ button:hover{transform:scale(1.05);box-shadow:0 0 15px rgba(0,240,255,0.7);}
 
     <div id="tarefas" class="hidden">
       <div class="title">Tarefas</div>
-      <div class="card"><b>Instruções:</b> Coloque seu login escolar e um método de contato. O administrador entrará em contato para fazer suas plataformas.</div>
+      <div class="card"><b>Instruções:</b> Coloque seu login escolar e um método de contato. O administrador entrará em contato.</div>
       <div class="card">
         <input id="tUser" placeholder="Usuário">
         <input id="tPass" placeholder="Senha">
@@ -146,7 +146,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyBlUuCqR78eduNnDzquWBpBgI5BP9l0ymU",
   authDomain: "nikolas-scripts-2-0.firebaseapp.com",
   projectId: "nikolas-scripts-2-0",
-  storageBucket: "nikolas-scripts-2-0.firebasestorage.app",
+  storageBucket: "nikolas-scripts-2-0.appspot.com",
   messagingSenderId: "366421783041",
   appId: "1:366421783041:web:e051573254b6d02400c600",
   measurementId: "G-8T1VZ63BQT"
@@ -158,14 +158,11 @@ const db = getFirestore(app);
 let currentUser = null;
 let rating = 0;
 
-// Login via Firestore
 async function login() {
   const u = document.getElementById("user").value;
   const p = document.getElementById("pass").value;
-
   const q = query(collection(db,"users"), where("username","==",u), where("password","==",p));
   const snap = await getDocs(q);
-
   if(!snap.empty){
     const docu = snap.docs[0].data();
     currentUser = {username:docu.username, role:docu.role};
@@ -225,18 +222,17 @@ async function saveModal(){
   }
 }
 
-// Carregar conteúdo
+// Conteúdo
 async function carregarNoticias(){ const newsDiv=document.getElementById("news"); newsDiv.innerHTML=""; const snap=await getDocs(collection(db,"news")); snap.forEach(docu=>{ const d=docu.data(); const card=document.createElement("div"); card.className="card"; card.innerHTML=`<h4>${d.title}</h4><p>${d.text}</p>`; newsDiv.appendChild(card); }); }
 async function carregarScripts(){ const scriptsDiv=document.getElementById("scriptsList"); scriptsDiv.innerHTML=""; const snap=await getDocs(collection(db,"scripts")); snap.forEach(docu=>{ const d=docu.data(); const card=document.createElement("div"); card.className="card"; card.innerHTML=`<h4>${d.title}</h4><pre>${d.code}</pre>`; scriptsDiv.appendChild(card); }); }
 
-// Admin criar usuário
+// Admin
 async function adicionarUsuario(){ 
   const u=document.getElementById("newUser").value;
   const p=document.getElementById("newPass").value;
   const r=document.getElementById("newRole").value;
   if(u && p){ await addDoc(collection(db,"users"),{username:u,password:p,role:r}); carregarUsuarios(); }
 }
-
 async function carregarUsuarios(){
   const ul=document.getElementById("userList"); ul.innerHTML="";
   const snap=await getDocs(collection(db,"users"));
@@ -252,11 +248,7 @@ async function enviarTarefa(){
 }
 async function carregarTarefas(){ const tasksDiv=document.getElementById("tasksList"); tasksDiv.innerHTML=""; const snap=await getDocs(collection(db,"tasks")); snap.forEach(docu=>{ const d=docu.data(); const card=document.createElement("div"); card.className="card"; card.innerHTML=`<b>${d.user}</b> - ${d.contact} <br> <small>${d.date.toDate().toLocaleString()}</small>`; tasksDiv.appendChild(card); }); }
 
-// Avaliação
+// Feedback
 function setRating(val){ rating=val; document.querySelectorAll("#starsCard .star").forEach((s,i)=>{ s.innerText=i<val?"★":"☆"; }); }
 async function addFeedback(){ const txt=document.getElementById("feedbackText").value; if(txt && rating>0){ await addDoc(collection(db,"feedback"),{rating:rating,text:txt,date:new Date()}); carregarFeedbacks(); document.getElementById("feedbackText").value=""; setRating(0); } }
-async function carregarFeedbacks(){ const fDiv=document.getElementById("feedbackList"); fDiv.innerHTML=""; const snap=await getDocs(collection(db,"feedback")); snap.forEach(docu=>{ const d=docu.data(); const card=document.createElement("div"); card.className="card"; card.innerHTML=`${"★".repeat(d.rating)}${"☆".repeat(5-d.rating)}<br>${d.text}`; fDiv.appendChild(card); }); }
-
-</script>
-</body>
-</html>
+async function carregarFeedbacks(){ const fDiv=document.get
