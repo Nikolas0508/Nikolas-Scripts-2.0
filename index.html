@@ -138,100 +138,25 @@ button:hover{transform:scale(1.05);box-shadow:0 0 15px rgba(0,240,255,0.7);}
   </div>
 </div>
 
-<script>
-let users={"NikolasP":{pass:"2011",role:"admin"}};
-let currentUser=null;
+<!-- Firebase SDK -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
 
-function login(){
-  let user=document.getElementById("user").value;
-  let pass=document.getElementById("pass").value;
-  if(!users[user]){alert("Usuário incorreto"); return;}
-  if(users[user].pass!==pass){alert("Senha incorreta"); return;}
-  currentUser=users[user];
-  document.getElementById("loginPage").style.display="none";
-  document.getElementById("app").style.display="block";
-  document.getElementById("topText").innerText="Bem-vindo, "+user;
-  if(currentUser.role==="admin"){addNewsBtn.classList.remove("hidden"); addScriptBtn.classList.remove("hidden");}
-}
+const firebaseConfig = {
+  apiKey: "AIzaSyBlUuCqR78eduNnDzquWBpBgI5BP9l0ymU",
+  authDomain: "nikolas-scripts-2-0.firebaseapp.com",
+  projectId: "nikolas-scripts-2-0",
+  storageBucket: "nikolas-scripts-2-0.firebasestorage.app",
+  messagingSenderId: "366421783041",
+  appId: "1:366421783041:web:e051573254b6d02400c600",
+  measurementId: "G-8T1VZ63BQT"
+};
 
-function logout(){location.reload();}
-function show(id){["inicio","ajuda","scripts","tarefas","avaliacao","admin"].forEach(p=>{document.getElementById(p).classList.add("hidden");}); document.getElementById(id).classList.remove("hidden");}
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-function showModal(type){
-  modalPanel.classList.remove("hidden");
-  newsTitle.classList.add("hidden"); newsText.classList.add("hidden");
-  scriptTitle.classList.add("hidden"); scriptCode.classList.add("hidden");
-  if(type==="news"){modalTitle.innerText="Nova novidade"; modalPanel.dataset.type="news"; newsTitle.classList.remove("hidden"); newsText.classList.remove("hidden");}
-  if(type==="script"){modalTitle.innerText="Novo script"; modalPanel.dataset.type="script"; scriptTitle.classList.remove("hidden"); scriptCode.classList.remove("hidden");}
-}
+let currentUser = null;
+let rating = 0;
 
-function closeModal(){modalPanel.classList.add("hidden");}
-
-function saveModal(){
-  let type=modalPanel.dataset.type;
-  if(type==="news"){
-    let t=newsTitle.value, s=newsText.value;
-    let card=document.createElement("div"); card.className="card";
-    card.innerHTML="<b>"+t+"</b><p>"+s+"</p><button onclick='deleteCard(this)'>Excluir</button>";
-    news.prepend(card);
-  }
-  if(type==="script"){
-    let t=scriptTitle.value, s=scriptCode.value;
-    let card=document.createElement("div"); card.className="card"; card.dataset.code=s;
-    card.innerHTML="<b>"+t+"</b><div class='card-buttons'><button onclick='copyScript(this)'>Copiar</button><button onclick='deleteCard(this)'>Excluir</button></div>";
-    scriptsList.prepend(card);
-  }
-  closeModal();
-}
-
-function copyScript(btn){
-  let code=btn.closest('.card').dataset.code;
-  navigator.clipboard.writeText(code).then(()=>{alert("Script copiado");});
-}
-
-function deleteCard(btn){btn.closest('.card').remove();}
-
-function enviarTarefa(){
-  let u=tUser.value.trim(), p=tPass.value.trim(), c=tContato.value.trim();
-  if(!u || !p || !c){alert("Preencha todos os campos!"); return;}
-  let now=new Date();
-  let data=`${now.toLocaleDateString()} ${now.toLocaleTimeString()}`;
-  let card=document.createElement("div"); card.className="card";
-  card.innerHTML=`Usuário: ${u} | Senha: ${p} | Contato: ${c} | Enviado em: ${data} <button onclick='deleteCard(this)'>Excluir</button>`;
-  tasksList.prepend(card);
-  alert("Login enviado! O administrador entrará em contato.");
-  tUser.value=""; tPass.value=""; tContato.value="";
-}
-
-// Avaliação
-let rating=0;
-function setRating(n){
-  rating=n;
-  document.querySelectorAll('#starsCard .star').forEach((s,i)=>{s.textContent=(i<n)?"★":"☆";});
-}
-function addFeedback(){
-  let text=document.getElementById("feedbackText").value.trim();
-  if(!text){alert("Digite um feedback"); return;}
-  let card=document.createElement("div"); card.className="card";
-  card.innerHTML=`<b>Rating:</b> ${rating}★<p>${text}</p><button onclick='deleteCard(this)'>Excluir</button>`;
-  feedbackList.prepend(card);
-  rating=0; document.getElementById("feedbackText").value=""; 
-  document.querySelectorAll('#starsCard .star').forEach(s=>s.textContent="☆");
-}
-
-// Admin adicionar usuários
-function adicionarUsuario(){
-  let u=document.getElementById("newUser").value.trim();
-  let p=document.getElementById("newPass").value.trim();
-  let r=document.getElementById("newRole").value;
-  if(!u || !p){alert("Preencha usuário e senha!"); return;}
-  users[u]={pass:p,role:r};
-  let card=document.createElement("div"); card.className="card";
-  card.innerHTML=`Usuário: ${u} | Senha: ${p} | Função: ${r} <button onclick='deleteCard(this)'>Excluir</button>`;
-  userList.prepend(card);
-  document.getElementById("newUser").value=""; document.getElementById("newPass").value="";
-  alert("Usuário adicionado!");
-}
-</script>
-</body>
-</html>
+// Funções JS (login, logout, mostrar tabs, modal, CRUD Firestore)
