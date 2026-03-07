@@ -1,728 +1,311 @@
+```html
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Nikolas Scripts</title>
-
-<link rel="icon" href="favicon.png">
-
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+<title>Painel</title>
 
 <style>
 
-:root{--cyan:#00f0ff;}
-
-*{margin:0;padding:0;box-sizing:border-box;}
-
 body{
-font-family:'Inter',sans-serif;
-height:100vh;
-color:white;
-background:linear-gradient(140deg,#020617,#032b4a,#020617);
+margin:0;
+font-family:Arial;
+background:linear-gradient(45deg,#ff0000,#00ffea,#0000ff);
 background-size:400% 400%;
-animation:bgmove 40s ease infinite;
-overflow:hidden;
+animation:rgb 10s infinite alternate;
 }
 
-@keyframes bgmove{
+@keyframes rgb{
 0%{background-position:0% 50%}
-50%{background-position:100% 50%}
-100%{background-position:0% 50%}
+100%{background-position:100% 50%}
 }
 
-.login{
+#loginPage{
 display:flex;
-align-items:center;
-justify-content:center;
 height:100vh;
+justify-content:center;
+align-items:center;
 }
 
-.loginBox{
-width:360px;
-padding:45px;
-border-radius:20px;
-background:rgba(255,255,255,0.03);
-border:1px solid rgba(0,240,255,0.4);
-box-shadow:0 0 20px rgba(0,240,255,0.3);
-}
-
-.loginBox h2{
-font-family:'Orbitron',sans-serif;
+#loginBox{
+background:white;
+padding:30px;
+border-radius:10px;
+width:250px;
 text-align:center;
-margin-bottom:30px;
-color:var(--cyan);
 }
 
-input,textarea,select{
+input,select,button,textarea{
 width:100%;
-padding:12px;
-margin-bottom:12px;
-background:#020617;
-border:1px solid rgba(0,240,255,0.3);
-border-radius:8px;
-color:white;
+margin-top:10px;
+padding:8px;
+box-sizing:border-box;
 }
 
 button{
-padding:12px;
-border-radius:8px;
-border:none;
-background:linear-gradient(90deg,#00f0ff,#00c8ff);
-font-weight:600;
 cursor:pointer;
-transition:0.3s;
 }
 
-button:hover{
-transform:scale(1.05);
-box-shadow:0 0 15px rgba(0,240,255,0.7);
-}
-
-.app{display:none;}
-
-.sidebar{
-position:fixed;
-left:0;
-top:0;
-height:100vh;
-width:260px;
-background:rgba(10,20,35,0.9);
-border-right:1px solid rgba(0,240,255,0.25);
-padding:30px;
-}
-
-.logo{
-font-family:'Orbitron',sans-serif;
-font-size:22px;
-color:var(--cyan);
-margin-bottom:40px;
-}
-
-.sidebar a{
-display:block;
-padding:12px;
-margin-bottom:10px;
-border-radius:8px;
-cursor:pointer;
-transition:0.3s;
-color:#cbd5e1;
-}
-
-.sidebar a:hover{
-background:rgba(0,240,255,0.15);
-color:var(--cyan);
-transform:translateX(6px);
-}
-
-.logout{
-position:absolute;
-bottom:30px;
-width:200px;
-}
-
-.topbar{
-position:fixed;
-left:260px;
-top:0;
-height:70px;
-width:calc(100% - 260px);
-background:rgba(10,20,35,0.8);
-border-bottom:1px solid rgba(0,240,255,0.25);
-display:flex;
-align-items:center;
-padding-left:30px;
-font-weight:600;
-color:var(--cyan);
-}
-
-.content{
-margin-left:260px;
-margin-top:70px;
-padding:35px;
-height:calc(100vh - 70px);
-overflow:auto;
-}
-
-.title{
-font-size:34px;
-font-weight:700;
-margin-bottom:25px;
-color:var(--cyan);
-font-family:'Orbitron',sans-serif;
+#app{
+display:none;
+padding:20px;
 }
 
 .card{
-background:rgba(255,255,255,0.03);
-border:1px solid rgba(0,240,255,0.25);
-padding:25px;
-border-radius:15px;
-margin-bottom:20px;
+background:white;
+padding:15px;
+margin-top:15px;
+border-radius:10px;
 }
 
-.hidden{display:none;}
-
-.floatBtn{
-position:fixed;
-bottom:20px;
-right:20px;
-width:45px;
-height:45px;
-background:var(--cyan);
-border-radius:50%;
-color:#020617;
-font-weight:700;
-cursor:pointer;
-display:flex;
-align-items:center;
-justify-content:center;
+.hidden{
+display:none;
 }
 
-.script-box{
-background:#000;
-padding:12px;
-border-radius:8px;
+.scriptBox{
+background:#111;
+color:#0f0;
+padding:10px;
 margin-top:10px;
-font-family:monospace;
 white-space:pre-wrap;
-overflow:auto;
 }
 
-.card-buttons{
-display:flex;
-gap:10px;
-margin-top:10px;
+.copyBtn{
+background:#333;
+color:white;
 }
 
-.copy-btn{background:#22c55e;}
+.deleteBtn{
+background:red;
+color:white;
+margin-top:5px;
+}
 
 </style>
 </head>
 
 <body>
 
-<div class="login" id="loginPage">
-
-<div class="loginBox">
-
-<h2>Nikolas Scripts</h2>
-
+<div id="loginPage">
+<div id="loginBox">
+<h3>Login</h3>
 <input id="user" placeholder="Usuário">
-<input id="pass" type="password" placeholder="Senha">
-
-<button style="width:100%" onclick="login()">Entrar</button>
-
+<input id="pass" placeholder="Senha" type="password">
+<button onclick="login()">Entrar</button>
 </div>
 </div>
 
-<div class="app" id="app">
+<div id="app">
 
-<div class="sidebar">
+<h2 id="topText"></h2>
 
-<div class="logo">Nikolas Scripts</div>
-
-<a onclick="show('inicio')">Inicio</a>
-<a onclick="show('ajuda')">Ajuda</a>
-<a onclick="show('scripts')">Scripts</a>
-<a onclick="show('tarefas')">Tarefas</a>
-<a onclick="show('avaliacao')">Avaliação</a>
-<a id="adminBtn" onclick="show('admin')">Admin</a>
-
-<button class="logout" onclick="logout()">Sair</button>
-
-</div>
-
-<div class="topbar" id="topText">Bem-vindo</div>
-
-<div class="content">
-
-<div id="inicio">
-
-<div class="title">Inicio</div>
-
-<div id="news"></div>
-
-<button class="floatBtn hidden" id="addNewsBtn" onclick="showModal('news')">N</button>
-
-</div>
-
-<div id="scripts" class="hidden">
-
-<div class="title">Scripts</div>
-
-<div id="scriptsList"></div>
-
-<button class="floatBtn hidden" id="addScriptBtn" onclick="showModal('script')">S</button>
-
-</div>
-
-<div id="tarefas" class="hidden">
-
-<div class="title">Tarefas</div>
+<button id="adminBtn" class="hidden">Painel Admin</button>
 
 <div class="card">
+<h3>Novidades</h3>
 
-<input id="tUser" placeholder="Usuário">
-<input id="tPass" placeholder="Senha">
-<input id="tContato" placeholder="Contato">
+<textarea id="newsText"></textarea>
+<button id="addNewsBtn" onclick="addNews()">Adicionar</button>
 
-<button style="width:100%" onclick="enviarTarefa()">Enviar</button>
-
-</div>
-
-<div id="tasksList"></div>
+<div id="newsList"></div>
 
 </div>
-
-<div id="avaliacao" class="hidden">
-
-<div class="title">Avaliação</div>
 
 <div class="card">
+<h3>Scripts</h3>
 
-<span onclick="setRating(1)">☆</span>
-<span onclick="setRating(2)">☆</span>
-<span onclick="setRating(3)">☆</span>
-<span onclick="setRating(4)">☆</span>
-<span onclick="setRating(5)">☆</span>
+<textarea id="scriptText"></textarea>
+<button id="addScriptBtn" onclick="addScript()">Adicionar</button>
 
-<textarea id="feedbackText"></textarea>
-
-<button onclick="addFeedback()">Publicar</button>
-
-</div>
-
-<div id="feedbackList"></div>
-
-</div>
-
-<div id="admin" class="hidden">
-
-<div class="title">Admin</div>
-
-<div class="card">
-
-<input id="newUser" placeholder="Usuário">
-<input id="newPass" placeholder="Senha">
-
-<select id="newRole">
-<option value="admin">Administrador</option>
-<option value="amigo">Amigo</option>
-<option value="desconhecido">Desconhecido</option>
-</select>
-
-<button onclick="adicionarUsuario()">Adicionar</button>
-
-</div>
-
-<div id="userList"></div>
-
-</div>
-
-</div>
-</div>
-
-<div id="modalPanel" class="hidden">
-
-<div class="card" style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:400px;background:#000">
-
-<h3 id="modalTitle" style="color:#00f0ff;margin-bottom:10px;"></h3>
-
-<input id="newsTitle" placeholder="Título notícia" class="hidden">
-<textarea id="newsText" placeholder="Texto notícia" class="hidden"></textarea>
-
-<input id="scriptTitle" placeholder="Título script" class="hidden">
-<textarea id="scriptCode" placeholder="Código script" class="hidden"></textarea>
-
-<button onclick="saveModal()">Salvar</button>
-<button onclick="closeModal()">Fechar</button>
+<div id="scriptList"></div>
 
 </div>
 
 </div>
 
-<script type="module">
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-
-import {
-getFirestore,
-collection,
-addDoc,
-getDocs,
-query,
-where,
-deleteDoc,
-doc
-} from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
-
-const firebaseConfig={
-apiKey:"AIzaSyBlUuCqR78eduNnDzquWBpBgI5BP9l0ymU",
-authDomain:"nikolas-scripts-2-0.firebaseapp.com",
-projectId:"nikolas-scripts-2-0"
-};
-
-const app=initializeApp(firebaseConfig);
-const db=getFirestore(app);
+<script>
 
 let currentUser=null;
-let modalType="";
-let rating=0;
 
-async function login(){
+const users=[
+{username:"admin",password:"admin123",role:"admin"},
+{username:"user",password:"123",role:"user"}
+];
 
-const u=user.value;
-const p=pass.value;
+let news=[];
+let scripts=[];
 
-const q=query(collection(db,"users"),where("username","==",u),where("password","==",p));
-const snap=await getDocs(q);
+function login(){
 
-if(!snap.empty){
+const u=document.getElementById("user").value;
+const p=document.getElementById("pass").value;
 
-const d=snap.docs[0].data();
+const user=users.find(x=>x.username===u && x.password===p);
 
-currentUser={username:d.username,role:d.role};
+if(!user){
+alert("Login inválido");
+return;
+}
 
-loginPage.style.display="none";
-app.style.display="block";
+currentUser=user;
 
-topText.innerText=`Bem-vindo, ${currentUser.username}`;
+document.getElementById("loginPage").style.display="none";
+document.getElementById("app").style.display="block";
 
-adminBtn.classList.toggle("hidden",currentUser.role!=="admin");
-addNewsBtn.classList.toggle("hidden",currentUser.role!=="admin");
-addScriptBtn.classList.toggle("hidden",currentUser.role!=="admin");
+document.getElementById("topText").innerText="Bem vindo "+currentUser.username;
 
-carregarNoticias();
-carregarScripts();
-carregarUsuarios();
-carregarTarefas();
-carregarFeedbacks();
+document.getElementById("adminBtn").classList.toggle("hidden",currentUser.role!=="admin");
+document.getElementById("addNewsBtn").classList.toggle("hidden",currentUser.role!=="admin");
+document.getElementById("addScriptBtn").classList.toggle("hidden",currentUser.role!=="admin");
+
+renderNews();
+renderScripts();
 
 }
 
-else alert("Login inválido");
+function addNews(){
 
-}
+const txt=document.getElementById("newsText").value;
 
-function logout(){
+if(!txt) return;
 
-currentUser=null;
-
-loginPage.style.display="flex";
-app.style.display="none";
-
-}
-
-function show(tab){
-
-document.querySelectorAll(".content > div").forEach(d=>d.classList.add("hidden"));
-document.getElementById(tab).classList.remove("hidden");
-
-}
-
-function showModal(type){
-
-modalType=type;
-
-modalPanel.classList.remove("hidden");
-
-newsTitle.classList.add("hidden");
-newsText.classList.add("hidden");
-scriptTitle.classList.add("hidden");
-scriptCode.classList.add("hidden");
-
-if(type==="news"){
-
-modalTitle.innerText="Nova Notícia";
-newsTitle.classList.remove("hidden");
-newsText.classList.remove("hidden");
-
-}
-
-if(type==="script"){
-
-modalTitle.innerText="Novo Script";
-scriptTitle.classList.remove("hidden");
-scriptCode.classList.remove("hidden");
-
-}
-
-}
-
-function closeModal(){
-
-modalPanel.classList.add("hidden");
-
-}
-
-async function saveModal(){
-
-if(modalType==="news"){
-
-await addDoc(collection(db,"news"),{
-title:newsTitle.value,
-text:newsText.value,
-date:new Date()
+news.push({
+id:Date.now(),
+text:txt
 });
 
-carregarNoticias();
+document.getElementById("newsText").value="";
+
+renderNews();
 
 }
 
-if(modalType==="script"){
+function renderNews(){
 
-await addDoc(collection(db,"scripts"),{
-title:scriptTitle.value,
-code:scriptCode.value
-});
+const list=document.getElementById("newsList");
+list.innerHTML="";
 
-carregarScripts();
+news.forEach(n=>{
 
-}
+const div=document.createElement("div");
+div.className="card";
 
-closeModal();
-
-}
-
-window.login=login;
-window.logout=logout;
-window.show=show;
-window.showModal=showModal;
-window.closeModal=closeModal;
-window.saveModal=saveModal;
-
-window.copiarScript=async function(id,btn){
-
-const el=document.getElementById("script-"+id);
-
-await navigator.clipboard.writeText(el.innerText);
-
-btn.innerText="Copiado";
-
-setTimeout(()=>btn.innerText="Copiar",2000);
-
-};
-
-window.excluirDoc=async function(col,id){
-
-if(!confirm("Excluir?"))return;
-
-await deleteDoc(doc(db,col,id));
-
-carregarNoticias();
-carregarScripts();
-carregarUsuarios();
-carregarTarefas();
-carregarFeedbacks();
-
-};
-
-window.adicionarUsuario=async function(){
-
-await addDoc(collection(db,"users"),{
-username:newUser.value,
-password:newPass.value,
-role:newRole.value
-});
-
-carregarUsuarios();
-
-};
-
-window.enviarTarefa=async function(){
-
-await addDoc(collection(db,"tasks"),{
-user:tUser.value,
-pass:tPass.value,
-contact:tContato.value,
-date:new Date()
-});
-
-carregarTarefas();
-
-};
-
-window.setRating=function(v){
-
-rating=v;
-
-};
-
-window.addFeedback=async function(){
-
-await addDoc(collection(db,"feedback"),{
-rating:rating,
-text:feedbackText.value,
-date:new Date()
-});
-
-carregarFeedbacks();
-
-};
-
-async function carregarNoticias(){
-
-news.innerHTML="";
-
-const snap=await getDocs(collection(db,"news"));
-
-snap.forEach(docu=>{
-
-const d=docu.data();
-const id=docu.id;
-
-const card=document.createElement("div");
-
-card.className="card";
-
-card.innerHTML=`
-
-<h4>${d.title}</h4>
-<p>${d.text}</p>
-
-${currentUser.role==="admin" ? `<button onclick="excluirDoc('news','${id}')">Excluir</button>` : ""}
-
+div.innerHTML=`
+<div>${n.text}</div>
 `;
 
-news.appendChild(card);
+if(currentUser.role==="admin"){
+
+const btn=document.createElement("button");
+btn.innerText="Excluir";
+btn.className="deleteBtn";
+
+btn.onclick=function(){
+news=news.filter(x=>x.id!==n.id);
+renderNews();
+};
+
+div.appendChild(btn);
+
+}
+
+list.appendChild(div);
 
 });
 
 }
 
-async function carregarScripts(){
+function addScript(){
 
-scriptsList.innerHTML="";
+const txt=document.getElementById("scriptText").value;
 
-const snap=await getDocs(collection(db,"scripts"));
+if(!txt) return;
 
-snap.forEach(docu=>{
+scripts.push({
+id:Date.now(),
+text:txt
+});
 
-const d=docu.data();
-const id=docu.id;
+document.getElementById("scriptText").value="";
 
-const card=document.createElement("div");
+renderScripts();
 
-card.className="card";
+}
 
-card.innerHTML=`
+function renderScripts(){
 
-<h4>${d.title}</h4>
+const list=document.getElementById("scriptList");
+list.innerHTML="";
 
-<div class="script-box" id="script-${id}">
-${d.code}
-</div>
+scripts.forEach(s=>{
 
-<div class="card-buttons">
+const div=document.createElement("div");
+div.className="card";
 
-<button class="copy-btn" onclick="copiarScript('${id}',this)">Copiar</button>
+const scriptBox=document.createElement("div");
+scriptBox.className="scriptBox";
+scriptBox.id="script-"+s.id;
+scriptBox.innerText=s.text;
 
-${currentUser.role==="admin" ? `<button onclick="excluirDoc('scripts','${id}')">Excluir</button>` : ""}
+const copyBtn=document.createElement("button");
+copyBtn.innerText="Copiar";
+copyBtn.className="copyBtn";
 
-</div>
+copyBtn.onclick=function(){
+copiarScript(s.id,copyBtn);
+};
 
-`;
+div.appendChild(scriptBox);
+div.appendChild(copyBtn);
 
-scriptsList.appendChild(card);
+if(currentUser.role==="admin"){
+
+const del=document.createElement("button");
+del.innerText="Excluir";
+del.className="deleteBtn";
+
+del.onclick=function(){
+scripts=scripts.filter(x=>x.id!==s.id);
+renderScripts();
+};
+
+div.appendChild(del);
+
+}
+
+list.appendChild(div);
 
 });
 
 }
 
-async function carregarUsuarios(){
+async function copiarScript(id,btn){
 
-userList.innerHTML="";
+try{
 
-const snap=await getDocs(collection(db,"users"));
+const box=document.getElementById("script-"+id);
 
-snap.forEach(docu=>{
+if(!box) return;
 
-const d=docu.data();
-const id=docu.id;
+const texto=box.innerText;
 
-const card=document.createElement("div");
+await navigator.clipboard.writeText(texto);
 
-card.className="card";
+const original=btn.innerText;
 
-card.innerHTML=`
+btn.innerText="Copiado!";
+btn.disabled=true;
 
-${d.username} (${d.role})
+setTimeout(function(){
+btn.innerText=original;
+btn.disabled=false;
+},2000);
 
-<button onclick="excluirDoc('users','${id}')">Excluir</button>
+}catch(e){
 
-`;
-
-userList.appendChild(card);
-
-});
-
-}
-
-async function carregarTarefas(){
-
-tasksList.innerHTML="";
-
-const snap=await getDocs(collection(db,"tasks"));
-
-snap.forEach(docu=>{
-
-const d=docu.data();
-const id=docu.id;
-
-const card=document.createElement("div");
-
-card.className="card";
-
-card.innerHTML=`
-
-<b>${d.user}</b> - ${d.contact}
-
-<br>
-
-<small>${d.date?.toDate ? d.date.toDate().toLocaleString() : new Date(d.date).toLocaleString()}</small>
-
-${currentUser.role==="admin" ? `<button onclick="excluirDoc('tasks','${id}')">Excluir</button>` : ""}
-
-`;
-
-tasksList.appendChild(card);
-
-});
+alert("Erro ao copiar");
 
 }
-
-async function carregarFeedbacks(){
-
-feedbackList.innerHTML="";
-
-const snap=await getDocs(collection(db,"feedback"));
-
-snap.forEach(docu=>{
-
-const d=docu.data();
-const id=docu.id;
-
-const card=document.createElement("div");
-
-card.className="card";
-
-card.innerHTML=`
-
-${"★".repeat(d.rating)}${"☆".repeat(5-d.rating)}
-
-<br>
-
-${d.text}
-
-${currentUser.role==="admin" ? `<button onclick="excluirDoc('feedback','${id}')">Excluir</button>` : ""}
-
-`;
-
-feedbackList.appendChild(card);
-
-});
 
 }
 
@@ -730,3 +313,4 @@ feedbackList.appendChild(card);
 
 </body>
 </html>
+```
