@@ -376,7 +376,7 @@ async function carregarTarefas(){
     card.innerHTML=`
       <b>${d.user}</b> - ${d.contact}
       <br>
-      <small>${d.date.toDate().toLocaleString()}</small>
+      <small>${d.date?.toDate ? d.date.toDate().toLocaleString() : new Date(d.date).toLocaleString()}</small>
 
       ${currentUser.role==="admin" ? `
       <div class="card-buttons">
