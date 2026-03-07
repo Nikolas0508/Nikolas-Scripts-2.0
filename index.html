@@ -92,7 +92,6 @@ button:hover{transform:scale(1.05);box-shadow:0 0 15px rgba(0,240,255,0.7);}
 
     <div id="avaliacao" class="hidden">
       <div class="title">Avaliação</div>
-      <div class="card">Deixe seu feedback ou sugestão sobre o site.</div>
       <div class="card" id="starsCard">
         <span class="star" onclick="setRating(1)">☆</span>
         <span class="star" onclick="setRating(2)">☆</span>
@@ -222,33 +221,42 @@ async function saveModal(){
   }
 }
 
-// Conteúdo
-async function carregarNoticias(){ const newsDiv=document.getElementById("news"); newsDiv.innerHTML=""; const snap=await getDocs(collection(db,"news")); snap.forEach(docu=>{ const d=docu.data(); const card=document.createElement("div"); card.className="card"; card.innerHTML=`<h4>${d.title}</h4><p>${d.text}</p>`; newsDiv.appendChild(card); }); }
-async function carregarScripts(){ const scriptsDiv=document.getElementById("scriptsList"); scriptsDiv.innerHTML=""; const snap=await getDocs(collection(db,"scripts")); snap.forEach(docu=>{ const d=docu.data(); const card=document.createElement("div"); card.className="card"; card.innerHTML=`<h4>${d.title}</h4><pre>${d.code}</pre>`; scriptsDiv.appendChild(card); }); }
+// Expor funções para HTML
+window.login = login;
+window.logout = logout;
+window.show = show;
+window.showModal = showModal;
+window.closeModal = closeModal;
+window.saveModal = saveModal;
 
-// Admin
-async function adicionarUsuario(){ 
+window.adicionarUsuario = async function() {
   const u=document.getElementById("newUser").value;
   const p=document.getElementById("newPass").value;
   const r=document.getElementById("newRole").value;
   if(u && p){ await addDoc(collection(db,"users"),{username:u,password:p,role:r}); carregarUsuarios(); }
-}
-async function carregarUsuarios(){
-  const ul=document.getElementById("userList"); ul.innerHTML="";
-  const snap=await getDocs(collection(db,"users"));
-  snap.forEach(docu=>{ const d=docu.data(); const card=document.createElement("div"); card.className="card"; card.innerText=`${d.username} (${d.role})`; ul.appendChild(card); });
-}
+};
 
-// Tarefas
-async function enviarTarefa(){ 
+window.enviarTarefa = async function(){
   const tUser=document.getElementById("tUser").value;
   const tPass=document.getElementById("tPass").value;
   const tContato=document.getElementById("tContato").value;
   if(tUser && tPass && tContato){ await addDoc(collection(db,"tasks"),{user:tUser,pass:tPass,contact:tContato,date:new Date()}); carregarTarefas(); }
-}
-async function carregarTarefas(){ const tasksDiv=document.getElementById("tasksList"); tasksDiv.innerHTML=""; const snap=await getDocs(collection(db,"tasks")); snap.forEach(docu=>{ const d=docu.data(); const card=document.createElement("div"); card.className="card"; card.innerHTML=`<b>${d.user}</b> - ${d.contact} <br> <small>${d.date.toDate().toLocaleString()}</small>`; tasksDiv.appendChild(card); }); }
+};
 
-// Feedback
-function setRating(val){ rating=val; document.querySelectorAll("#starsCard .star").forEach((s,i)=>{ s.innerText=i<val?"★":"☆"; }); }
-async function addFeedback(){ const txt=document.getElementById("feedbackText").value; if(txt && rating>0){ await addDoc(collection(db,"feedback"),{rating:rating,text:txt,date:new Date()}); carregarFeedbacks(); document.getElementById("feedbackText").value=""; setRating(0); } }
-async function carregarFeedbacks(){ const fDiv=document.get
+window.setRating = function(val){ rating=val; document.querySelectorAll("#starsCard .star").forEach((s,i)=>{ s.innerText=i<val?"★":"☆"; }); };
+
+window.addFeedback = async function(){ 
+  const txt=document.getElementById("feedbackText").value;
+  if(txt && rating>0){ await addDoc(collection(db,"feedback"),{rating:rating,text:txt,date:new Date()}); carregarFeedbacks(); document.getElementById("feedbackText").value=""; setRating(0); }
+};
+
+// Carregar conteúdo
+async function carregarNoticias(){ const newsDiv=document.getElementById("news"); newsDiv.innerHTML=""; const snap=await getDocs(collection(db,"news")); snap.forEach(docu=>{ const d=docu.data(); const card=document.createElement("div"); card.className="card"; card.innerHTML=`<h4>${d.title}</h4><p>${d.text}</p>`; newsDiv.appendChild(card); }); }
+async function carregarScripts(){ const scriptsDiv=document.getElementById("scriptsList"); scriptsDiv.innerHTML=""; const snap=await getDocs(collection(db,"scripts")); snap.forEach(docu=>{ const d=docu.data(); const card=document.createElement("div"); card.className="card"; card.innerHTML=`<h4>${d.title}</h4><pre>${d.code}</pre>`; scriptsDiv.appendChild(card); }); }
+async function carregarUsuarios(){ const ul=document.getElementById("userList"); ul.innerHTML=""; const snap=await getDocs(collection(db,"users")); snap.forEach(docu=>{ const d=docu.data(); const card=document.createElement("div"); card.className="card"; card.innerText=`${d.username} (${d.role})`; ul.appendChild(card); }); }
+async function carregarTarefas(){ const tasksDiv=document.getElementById("tasksList"); tasksDiv.innerHTML=""; const snap=await getDocs(collection(db,"tasks")); snap.forEach(docu=>{ const d=docu.data(); const card=document.createElement("div"); card.className="card"; card.innerHTML=`<b>${d.user}</b> - ${d.contact} <br> <small>${d.date.toDate().toLocaleString()}</small>`; tasksDiv.appendChild(card); }); }
+async function carregarFeedbacks(){ const fDiv=document.getElementById("feedbackList"); fDiv.innerHTML=""; const snap=await getDocs(collection(db,"feedback")); snap.forEach(docu=>{ const d=docu.data(); const card=document.createElement("div"); card.className="card"; card.innerHTML=`${"★".repeat(d.rating)}${"☆".repeat(5-d.rating)}<br>${d.text}`; fDiv.appendChild(card); }); }
+
+</script>
+</body>
+</html>
