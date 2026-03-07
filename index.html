@@ -4,6 +4,7 @@
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Nikolas Scripts</title>
 
 <link rel="icon" href="favicon.png">
@@ -159,12 +160,6 @@ border:1px solid rgba(0,240,255,0.25);
 padding:25px;
 border-radius:15px;
 margin-bottom:20px;
-transition:0.3s;
-}
-
-.card:hover{
-box-shadow:0 0 15px var(--cyan);
-border-color:var(--cyan);
 }
 
 .hidden{display:none;}
@@ -173,8 +168,8 @@ border-color:var(--cyan);
 position:fixed;
 bottom:20px;
 right:20px;
-width:40px;
-height:40px;
+width:45px;
+height:45px;
 background:var(--cyan);
 border-radius:50%;
 color:#020617;
@@ -183,12 +178,6 @@ cursor:pointer;
 display:flex;
 align-items:center;
 justify-content:center;
-}
-
-.card-buttons{
-display:flex;
-gap:10px;
-margin-top:15px;
 }
 
 .script-box{
@@ -201,13 +190,13 @@ white-space:pre-wrap;
 overflow:auto;
 }
 
-.copy-btn{
-background:#22c55e;
+.card-buttons{
+display:flex;
+gap:10px;
+margin-top:10px;
 }
 
-.copy-btn.copied{
-background:#2563eb;
-}
+.copy-btn{background:#22c55e;}
 
 </style>
 </head>
@@ -215,6 +204,7 @@ background:#2563eb;
 <body>
 
 <div class="login" id="loginPage">
+
 <div class="loginBox">
 
 <h2>Nikolas Scripts</h2>
@@ -249,18 +239,23 @@ background:#2563eb;
 <div class="content">
 
 <div id="inicio">
-<div class="title">Inicio</div>
-<div id="news"></div>
-</div>
 
-<div id="ajuda" class="hidden">
-<div class="title">Ajuda</div>
-<div class="card">Clique em copiar para copiar scripts.</div>
+<div class="title">Inicio</div>
+
+<div id="news"></div>
+
+<button class="floatBtn hidden" id="addNewsBtn" onclick="showModal('news')">N</button>
+
 </div>
 
 <div id="scripts" class="hidden">
+
 <div class="title">Scripts</div>
+
 <div id="scriptsList"></div>
+
+<button class="floatBtn hidden" id="addScriptBtn" onclick="showModal('script')">S</button>
+
 </div>
 
 <div id="tarefas" class="hidden">
@@ -285,15 +280,15 @@ background:#2563eb;
 
 <div class="title">Avaliação</div>
 
-<div class="card" id="starsCard">
+<div class="card">
 
-<span class="star" onclick="setRating(1)">☆</span>
-<span class="star" onclick="setRating(2)">☆</span>
-<span class="star" onclick="setRating(3)">☆</span>
-<span class="star" onclick="setRating(4)">☆</span>
-<span class="star" onclick="setRating(5)">☆</span>
+<span onclick="setRating(1)">☆</span>
+<span onclick="setRating(2)">☆</span>
+<span onclick="setRating(3)">☆</span>
+<span onclick="setRating(4)">☆</span>
+<span onclick="setRating(5)">☆</span>
 
-<textarea id="feedbackText" placeholder="Feedback"></textarea>
+<textarea id="feedbackText"></textarea>
 
 <button onclick="addFeedback()">Publicar</button>
 
@@ -329,6 +324,25 @@ background:#2563eb;
 </div>
 </div>
 
+<div id="modalPanel" class="hidden">
+
+<div class="card" style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:400px;background:#000">
+
+<h3 id="modalTitle" style="color:#00f0ff;margin-bottom:10px;"></h3>
+
+<input id="newsTitle" placeholder="Título notícia" class="hidden">
+<textarea id="newsText" placeholder="Texto notícia" class="hidden"></textarea>
+
+<input id="scriptTitle" placeholder="Título script" class="hidden">
+<textarea id="scriptCode" placeholder="Código script" class="hidden"></textarea>
+
+<button onclick="saveModal()">Salvar</button>
+<button onclick="closeModal()">Fechar</button>
+
+</div>
+
+</div>
+
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
@@ -344,27 +358,25 @@ deleteDoc,
 doc
 } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
 
-const firebaseConfig = {
-
+const firebaseConfig={
 apiKey:"AIzaSyBlUuCqR78eduNnDzquWBpBgI5BP9l0ymU",
 authDomain:"nikolas-scripts-2-0.firebaseapp.com",
 projectId:"nikolas-scripts-2-0"
-
 };
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+const app=initializeApp(firebaseConfig);
+const db=getFirestore(app);
 
 let currentUser=null;
+let modalType="";
 let rating=0;
 
 async function login(){
 
-const u=document.getElementById("user").value;
-const p=document.getElementById("pass").value;
+const u=user.value;
+const p=pass.value;
 
 const q=query(collection(db,"users"),where("username","==",u),where("password","==",p));
-
 const snap=await getDocs(q);
 
 if(!snap.empty){
@@ -373,13 +385,16 @@ const d=snap.docs[0].data();
 
 currentUser={username:d.username,role:d.role};
 
-document.getElementById("loginPage").style.display="none";
-document.getElementById("app").style.display="block";
+loginPage.style.display="none";
+app.style.display="block";
 
-document.getElementById("topText").innerText=`Bem-vindo, ${currentUser.username}`;
+topText.innerText=`Bem-vindo, ${currentUser.username}`;
 
-document.getElementById("adminBtn").classList.toggle("hidden",currentUser.role!=="admin");
+adminBtn.classList.toggle("hidden",currentUser.role!=="admin");
+addNewsBtn.classList.toggle("hidden",currentUser.role!=="admin");
+addScriptBtn.classList.toggle("hidden",currentUser.role!=="admin");
 
+carregarNoticias();
 carregarScripts();
 carregarUsuarios();
 carregarTarefas();
@@ -395,8 +410,8 @@ function logout(){
 
 currentUser=null;
 
-document.getElementById("loginPage").style.display="flex";
-document.getElementById("app").style.display="none";
+loginPage.style.display="flex";
+app.style.display="none";
 
 }
 
@@ -407,66 +422,76 @@ document.getElementById(tab).classList.remove("hidden");
 
 }
 
-window.login=login;
-window.logout=logout;
-window.show=show;
+function showModal(type){
 
-window.adicionarUsuario=async function(){
+modalType=type;
 
-const u=newUser.value;
-const p=newPass.value;
-const r=newRole.value;
+modalPanel.classList.remove("hidden");
 
-if(u&&p){
+newsTitle.classList.add("hidden");
+newsText.classList.add("hidden");
+scriptTitle.classList.add("hidden");
+scriptCode.classList.add("hidden");
 
-await addDoc(collection(db,"users"),{username:u,password:p,role:r});
+if(type==="news"){
 
-carregarUsuarios();
+modalTitle.innerText="Nova Notícia";
+newsTitle.classList.remove("hidden");
+newsText.classList.remove("hidden");
 
 }
 
-};
+if(type==="script"){
 
-window.enviarTarefa=async function(){
+modalTitle.innerText="Novo Script";
+scriptTitle.classList.remove("hidden");
+scriptCode.classList.remove("hidden");
 
-await addDoc(collection(db,"tasks"),{
+}
 
-user:tUser.value,
-pass:tPass.value,
-contact:tContato.value,
+}
+
+function closeModal(){
+
+modalPanel.classList.add("hidden");
+
+}
+
+async function saveModal(){
+
+if(modalType==="news"){
+
+await addDoc(collection(db,"news"),{
+title:newsTitle.value,
+text:newsText.value,
 date:new Date()
-
 });
 
-carregarTarefas();
+carregarNoticias();
 
-};
+}
 
-window.setRating=function(val){
+if(modalType==="script"){
 
-rating=val;
-
-document.querySelectorAll(".star").forEach((s,i)=>{
-
-s.innerText=i<val?"★":"☆";
-
+await addDoc(collection(db,"scripts"),{
+title:scriptTitle.value,
+code:scriptCode.value
 });
 
-};
+carregarScripts();
 
-window.addFeedback=async function(){
+}
 
-await addDoc(collection(db,"feedback"),{
+closeModal();
 
-rating:rating,
-text:feedbackText.value,
-date:new Date()
+}
 
-});
-
-carregarFeedbacks();
-
-};
+window.login=login;
+window.logout=logout;
+window.show=show;
+window.showModal=showModal;
+window.closeModal=closeModal;
+window.saveModal=saveModal;
 
 window.copiarScript=async function(id,btn){
 
@@ -474,22 +499,19 @@ const el=document.getElementById("script-"+id);
 
 await navigator.clipboard.writeText(el.innerText);
 
-btn.innerText="Copiado!";
-btn.classList.add("copied");
+btn.innerText="Copiado";
 
-setTimeout(()=>{
-btn.innerText="Copiar";
-btn.classList.remove("copied");
-},2000);
+setTimeout(()=>btn.innerText="Copiar",2000);
 
 };
 
 window.excluirDoc=async function(col,id){
 
-if(!confirm("Excluir item?"))return;
+if(!confirm("Excluir?"))return;
 
 await deleteDoc(doc(db,col,id));
 
+carregarNoticias();
 carregarScripts();
 carregarUsuarios();
 carregarTarefas();
@@ -497,11 +519,82 @@ carregarFeedbacks();
 
 };
 
+window.adicionarUsuario=async function(){
+
+await addDoc(collection(db,"users"),{
+username:newUser.value,
+password:newPass.value,
+role:newRole.value
+});
+
+carregarUsuarios();
+
+};
+
+window.enviarTarefa=async function(){
+
+await addDoc(collection(db,"tasks"),{
+user:tUser.value,
+pass:tPass.value,
+contact:tContato.value,
+date:new Date()
+});
+
+carregarTarefas();
+
+};
+
+window.setRating=function(v){
+
+rating=v;
+
+};
+
+window.addFeedback=async function(){
+
+await addDoc(collection(db,"feedback"),{
+rating:rating,
+text:feedbackText.value,
+date:new Date()
+});
+
+carregarFeedbacks();
+
+};
+
+async function carregarNoticias(){
+
+news.innerHTML="";
+
+const snap=await getDocs(collection(db,"news"));
+
+snap.forEach(docu=>{
+
+const d=docu.data();
+const id=docu.id;
+
+const card=document.createElement("div");
+
+card.className="card";
+
+card.innerHTML=`
+
+<h4>${d.title}</h4>
+<p>${d.text}</p>
+
+${currentUser.role==="admin" ? `<button onclick="excluirDoc('news','${id}')">Excluir</button>` : ""}
+
+`;
+
+news.appendChild(card);
+
+});
+
+}
+
 async function carregarScripts(){
 
-const div=scriptsList;
-
-div.innerHTML="";
+scriptsList.innerHTML="";
 
 const snap=await getDocs(collection(db,"scripts"));
 
@@ -511,6 +604,7 @@ const d=docu.data();
 const id=docu.id;
 
 const card=document.createElement("div");
+
 card.className="card";
 
 card.innerHTML=`
@@ -523,20 +617,15 @@ ${d.code}
 
 <div class="card-buttons">
 
-<button class="copy-btn" onclick="copiarScript('${id}',this)">
-Copiar
-</button>
+<button class="copy-btn" onclick="copiarScript('${id}',this)">Copiar</button>
 
-${currentUser.role==="admin" ? `
-<button onclick="excluirDoc('scripts','${id}')">
-Excluir
-</button>` : ""}
+${currentUser.role==="admin" ? `<button onclick="excluirDoc('scripts','${id}')">Excluir</button>` : ""}
 
 </div>
 
 `;
 
-div.appendChild(card);
+scriptsList.appendChild(card);
 
 });
 
@@ -544,9 +633,7 @@ div.appendChild(card);
 
 async function carregarUsuarios(){
 
-const div=userList;
-
-div.innerHTML="";
+userList.innerHTML="";
 
 const snap=await getDocs(collection(db,"users"));
 
@@ -563,13 +650,11 @@ card.innerHTML=`
 
 ${d.username} (${d.role})
 
-${currentUser.role==="admin" ? `
 <button onclick="excluirDoc('users','${id}')">Excluir</button>
-` : ""}
 
 `;
 
-div.appendChild(card);
+userList.appendChild(card);
 
 });
 
@@ -577,9 +662,7 @@ div.appendChild(card);
 
 async function carregarTarefas(){
 
-const div=tasksList;
-
-div.innerHTML="";
+tasksList.innerHTML="";
 
 const snap=await getDocs(collection(db,"tasks"));
 
@@ -589,6 +672,7 @@ const d=docu.data();
 const id=docu.id;
 
 const card=document.createElement("div");
+
 card.className="card";
 
 card.innerHTML=`
@@ -599,13 +683,11 @@ card.innerHTML=`
 
 <small>${d.date?.toDate ? d.date.toDate().toLocaleString() : new Date(d.date).toLocaleString()}</small>
 
-${currentUser.role==="admin" ? `
-<button onclick="excluirDoc('tasks','${id}')">Excluir</button>
-` : ""}
+${currentUser.role==="admin" ? `<button onclick="excluirDoc('tasks','${id}')">Excluir</button>` : ""}
 
 `;
 
-div.appendChild(card);
+tasksList.appendChild(card);
 
 });
 
@@ -613,9 +695,7 @@ div.appendChild(card);
 
 async function carregarFeedbacks(){
 
-const div=feedbackList;
-
-div.innerHTML="";
+feedbackList.innerHTML="";
 
 const snap=await getDocs(collection(db,"feedback"));
 
@@ -625,6 +705,7 @@ const d=docu.data();
 const id=docu.id;
 
 const card=document.createElement("div");
+
 card.className="card";
 
 card.innerHTML=`
@@ -635,13 +716,11 @@ ${"★".repeat(d.rating)}${"☆".repeat(5-d.rating)}
 
 ${d.text}
 
-${currentUser.role==="admin" ? `
-<button onclick="excluirDoc('feedback','${id}')">Excluir</button>
-` : ""}
+${currentUser.role==="admin" ? `<button onclick="excluirDoc('feedback','${id}')">Excluir</button>` : ""}
 
 `;
 
-div.appendChild(card);
+feedbackList.appendChild(card);
 
 });
 
