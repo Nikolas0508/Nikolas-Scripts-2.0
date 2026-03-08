@@ -2,18 +2,16 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Nikolas Scripts</title>
-
 <link rel="icon" href="favicon.png">
-
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
 
 :root{--cyan:#00f0ff;}
+
 *{margin:0;padding:0;box-sizing:border-box;}
 
 body{
@@ -32,12 +30,7 @@ overflow:hidden;
 100%{background-position:0% 50%}
 }
 
-.login{
-display:flex;
-align-items:center;
-justify-content:center;
-height:100vh;
-}
+.login{display:flex;align-items:center;justify-content:center;height:100vh;}
 
 .loginBox{
 width:360px;
@@ -55,7 +48,7 @@ margin-bottom:30px;
 color:var(--cyan);
 }
 
-input,textarea,select{
+input,textarea{
 width:100%;
 padding:12px;
 margin-bottom:12px;
@@ -66,7 +59,7 @@ color:white;
 }
 
 button{
-padding:12px;
+padding:10px;
 border-radius:8px;
 border:none;
 background:linear-gradient(90deg,#00f0ff,#00c8ff);
@@ -167,23 +160,16 @@ margin-bottom:20px;
 position:fixed;
 bottom:20px;
 right:20px;
-width:45px;
-height:45px;
+width:40px;
+height:40px;
 background:var(--cyan);
 border-radius:50%;
 color:#020617;
-font-size:22px;
 font-weight:700;
 cursor:pointer;
 display:flex;
 align-items:center;
 justify-content:center;
-}
-
-.card-buttons{
-display:flex;
-gap:10px;
-margin-top:15px;
 }
 
 .script-box{
@@ -193,15 +179,12 @@ border-radius:8px;
 margin-top:10px;
 font-family:monospace;
 white-space:pre-wrap;
-overflow:auto;
 }
 
-.copy-btn{
-background:#22c55e;
-}
-
-.copy-btn.copied{
-background:#2563eb;
+.card-buttons{
+display:flex;
+gap:10px;
+margin-top:15px;
 }
 
 </style>
@@ -211,21 +194,16 @@ background:#2563eb;
 
 <div class="login" id="loginPage">
 <div class="loginBox">
-
 <h2>Nikolas Scripts</h2>
-
 <input id="user" placeholder="Usuário">
 <input id="pass" type="password" placeholder="Senha">
-
 <button style="width:100%" onclick="login()">Entrar</button>
-
 </div>
 </div>
 
 <div class="app" id="app">
 
 <div class="sidebar">
-
 <div class="logo">Nikolas Scripts</div>
 
 <a onclick="show('inicio')">Inicio</a>
@@ -233,7 +211,7 @@ background:#2563eb;
 <a onclick="show('scripts')">Scripts</a>
 <a onclick="show('tarefas')">Tarefas</a>
 <a onclick="show('avaliacao')">Avaliação</a>
-<a id="adminBtn" onclick="show('admin')">Admin</a>
+<a onclick="show('admin')">Admin</a>
 
 <button class="logout" onclick="logout()">Sair</button>
 
@@ -246,32 +224,29 @@ background:#2563eb;
 <div id="inicio">
 <div class="title">Inicio</div>
 <div id="news"></div>
-<div id="addNewsBtn" class="floatBtn hidden" onclick="addNews()">+</div>
+<button class="floatBtn hidden" id="addNewsBtn" onclick="showModal('news')">N</button>
 </div>
 
 <div id="ajuda" class="hidden">
 <div class="title">Ajuda</div>
-<div class="card">Clique em copiar para copiar scripts.</div>
+<div class="card">Como copiar scripts: clique em copiar.</div>
+<div class="card">Como enviar tarefas: use a aba tarefas.</div>
 </div>
 
 <div id="scripts" class="hidden">
 <div class="title">Scripts</div>
 <div id="scriptsList"></div>
-<div id="addScriptBtn" class="floatBtn hidden" onclick="addScript()">+</div>
+<button class="floatBtn hidden" id="addScriptBtn" onclick="showModal('script')">S</button>
 </div>
 
 <div id="tarefas" class="hidden">
-
 <div class="title">Tarefas</div>
 
 <div class="card">
-
 <input id="tUser" placeholder="Usuário">
 <input id="tPass" placeholder="Senha">
 <input id="tContato" placeholder="Contato">
-
 <button style="width:100%" onclick="enviarTarefa()">Enviar</button>
-
 </div>
 
 <div id="tasksList"></div>
@@ -279,21 +254,17 @@ background:#2563eb;
 </div>
 
 <div id="avaliacao" class="hidden">
-
 <div class="title">Avaliação</div>
 
 <div class="card" id="starsCard">
-
 <span class="star" onclick="setRating(1)">☆</span>
 <span class="star" onclick="setRating(2)">☆</span>
 <span class="star" onclick="setRating(3)">☆</span>
 <span class="star" onclick="setRating(4)">☆</span>
 <span class="star" onclick="setRating(5)">☆</span>
 
-<textarea id="feedbackText" placeholder="Feedback"></textarea>
-
+<textarea id="feedbackText"></textarea>
 <button onclick="addFeedback()">Publicar</button>
-
 </div>
 
 <div id="feedbackList"></div>
@@ -301,11 +272,9 @@ background:#2563eb;
 </div>
 
 <div id="admin" class="hidden">
-
 <div class="title">Admin</div>
 
 <div class="card">
-
 <input id="newUser" placeholder="Usuário">
 <input id="newPass" placeholder="Senha">
 
@@ -316,7 +285,6 @@ background:#2563eb;
 </select>
 
 <button onclick="adicionarUsuario()">Adicionar</button>
-
 </div>
 
 <div id="userList"></div>
@@ -329,17 +297,7 @@ background:#2563eb;
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-
-import {
-getFirestore,
-collection,
-addDoc,
-getDocs,
-query,
-where,
-deleteDoc,
-doc
-} from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, query, where, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
 
 const firebaseConfig = {
 apiKey:"AIzaSyBlUuCqR78eduNnDzquWBpBgI5BP9l0ymU",
@@ -347,8 +305,8 @@ authDomain:"nikolas-scripts-2-0.firebaseapp.com",
 projectId:"nikolas-scripts-2-0"
 };
 
-const appFirebase = initializeApp(firebaseConfig);
-const db = getFirestore(appFirebase);
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 let currentUser=null;
 let rating=0;
@@ -372,11 +330,10 @@ app.style.display="block";
 
 topText.innerText=`Bem-vindo, ${currentUser.username}`;
 
-adminBtn.classList.toggle("hidden",currentUser.role!=="admin");
-
 addNewsBtn.classList.toggle("hidden",currentUser.role!=="admin");
 addScriptBtn.classList.toggle("hidden",currentUser.role!=="admin");
 
+carregarNoticias();
 carregarScripts();
 carregarUsuarios();
 carregarTarefas();
@@ -387,125 +344,61 @@ carregarFeedbacks();
 }
 
 function logout(){
-
-currentUser=null;
-
 loginPage.style.display="flex";
 app.style.display="none";
-
 }
 
 function show(tab){
-
 document.querySelectorAll(".content > div").forEach(d=>d.classList.add("hidden"));
 document.getElementById(tab).classList.remove("hidden");
-
 }
 
 window.login=login;
 window.logout=logout;
 window.show=show;
 
-window.addNews=async function(){
-
-const t=prompt("Digite a novidade");
-
-if(!t)return;
-
-await addDoc(collection(db,"news"),{text:t,date:new Date()});
-
-alert("Adicionado!");
-
-};
-
-window.addScript=async function(){
-
-const title=prompt("Título do script");
-const code=prompt("Cole o script");
-
-if(!title||!code)return;
-
-await addDoc(collection(db,"scripts"),{title:title,code:code});
-
-carregarScripts();
-
-};
-
-window.adicionarUsuario=async function(){
-
-await addDoc(collection(db,"users"),{
-username:newUser.value,
-password:newPass.value,
-role:newRole.value
-});
-
-carregarUsuarios();
-
-};
-
-window.enviarTarefa=async function(){
-
-await addDoc(collection(db,"tasks"),{
-user:tUser.value,
-pass:tPass.value,
-contact:tContato.value,
-date:new Date()
-});
-
-carregarTarefas();
-
-};
-
-window.setRating=function(val){
-
-rating=val;
-
-document.querySelectorAll(".star").forEach((s,i)=>{
-s.innerText=i<val?"★":"☆";
-});
-
-};
-
-window.addFeedback=async function(){
-
-await addDoc(collection(db,"feedback"),{
-rating:rating,
-text:feedbackText.value,
-date:new Date()
-});
-
-carregarFeedbacks();
-
-};
-
-window.copiarScript=async function(id,btn){
-
+window.copiarScript=async function(id){
 const el=document.getElementById("script-"+id);
-
 await navigator.clipboard.writeText(el.innerText);
-
-btn.innerText="Copiado!";
-btn.classList.add("copied");
-
-setTimeout(()=>{
-btn.innerText="Copiar";
-btn.classList.remove("copied");
-},2000);
-
+alert("Copiado!");
 };
 
 window.excluirDoc=async function(col,id){
-
 if(!confirm("Excluir item?"))return;
-
 await deleteDoc(doc(db,col,id));
-
+carregarNoticias();
 carregarScripts();
 carregarUsuarios();
 carregarTarefas();
 carregarFeedbacks();
-
 };
+
+async function carregarNoticias(){
+
+news.innerHTML="";
+
+const snap=await getDocs(collection(db,"news"));
+
+snap.forEach(docu=>{
+
+const d=docu.data();
+const id=docu.id;
+
+const card=document.createElement("div");
+card.className="card";
+
+card.innerHTML=`
+<h4>${d.title}</h4>
+<p>${d.text}</p>
+
+${currentUser.role==="admin" ? `<button onclick="excluirDoc('news','${id}')">Excluir</button>`:""}
+`;
+
+news.appendChild(card);
+
+});
+
+}
 
 async function carregarScripts(){
 
@@ -531,7 +424,7 @@ ${d.code}
 
 <div class="card-buttons">
 
-<button class="copy-btn" onclick="copiarScript('${id}',this)">
+<button onclick="copiarScript('${id}')">
 Copiar
 </button>
 
@@ -565,7 +458,11 @@ card.className="card";
 
 card.innerHTML=`
 ${d.username} (${d.role})
-${currentUser.role==="admin" ? `<button onclick="excluirDoc('users','${id}')">Excluir</button>` : ""}
+
+${currentUser.role==="admin" ? `
+<button onclick="excluirDoc('users','${id}')">
+Excluir
+</button>` : ""}
 `;
 
 userList.appendChild(card);
@@ -591,10 +488,15 @@ card.className="card";
 card.innerHTML=`
 
 <b>${d.user}</b> - ${d.contact}
+
 <br>
+
 <small>${d.date?.toDate ? d.date.toDate().toLocaleString() : new Date(d.date).toLocaleString()}</small>
 
-${currentUser.role==="admin" ? `<button onclick="excluirDoc('tasks','${id}')">Excluir</button>` : ""}
+${currentUser.role==="admin" ? `
+<button onclick="excluirDoc('tasks','${id}')">
+Excluir
+</button>` : ""}
 
 `;
 
@@ -621,10 +523,15 @@ card.className="card";
 card.innerHTML=`
 
 ${"★".repeat(d.rating)}${"☆".repeat(5-d.rating)}
+
 <br>
+
 ${d.text}
 
-${currentUser.role==="admin" ? `<button onclick="excluirDoc('feedback','${id}')">Excluir</button>` : ""}
+${currentUser.role==="admin" ? `
+<button onclick="excluirDoc('feedback','${id}')">
+Excluir
+</button>` : ""}
 
 `;
 
