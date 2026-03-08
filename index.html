@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -9,9 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
-
 :root{--cyan:#00f0ff;}
-
 *{margin:0;padding:0;box-sizing:border-box;}
 
 body{
@@ -30,7 +27,12 @@ overflow:hidden;
 100%{background-position:0% 50%}
 }
 
-.login{display:flex;align-items:center;justify-content:center;height:100vh;}
+.login{
+display:flex;
+align-items:center;
+justify-content:center;
+height:100vh;
+}
 
 .loginBox{
 width:360px;
@@ -59,7 +61,7 @@ color:white;
 }
 
 button{
-padding:10px;
+padding:12px;
 border-radius:8px;
 border:none;
 background:linear-gradient(90deg,#00f0ff,#00c8ff);
@@ -152,6 +154,12 @@ border:1px solid rgba(0,240,255,0.25);
 padding:25px;
 border-radius:15px;
 margin-bottom:20px;
+transition:0.3s;
+}
+
+.card:hover{
+box-shadow:0 0 15px var(--cyan);
+border-color:var(--cyan);
 }
 
 .hidden{display:none;}
@@ -172,21 +180,17 @@ align-items:center;
 justify-content:center;
 }
 
-.script-box{
-background:#000;
-padding:12px;
-border-radius:8px;
-margin-top:10px;
-font-family:monospace;
-white-space:pre-wrap;
-}
-
 .card-buttons{
 display:flex;
-gap:10px;
+gap:20px;
 margin-top:15px;
 }
 
+.card-buttons button{
+flex:1;
+padding:12px;
+font-size:16px;
+}
 </style>
 </head>
 
@@ -214,7 +218,6 @@ margin-top:15px;
 <a onclick="show('admin')">Admin</a>
 
 <button class="logout" onclick="logout()">Sair</button>
-
 </div>
 
 <div class="topbar" id="topText">Bem-vindo</div>
@@ -243,6 +246,12 @@ margin-top:15px;
 <div class="title">Tarefas</div>
 
 <div class="card">
+<b>Instruções:</b>
+Coloque seu login escolar e um método de contato.
+O administrador entrará em contato.
+</div>
+
+<div class="card">
 <input id="tUser" placeholder="Usuário">
 <input id="tPass" placeholder="Senha">
 <input id="tContato" placeholder="Contato">
@@ -250,7 +259,6 @@ margin-top:15px;
 </div>
 
 <div id="tasksList"></div>
-
 </div>
 
 <div id="avaliacao" class="hidden">
@@ -263,19 +271,25 @@ margin-top:15px;
 <span class="star" onclick="setRating(4)">☆</span>
 <span class="star" onclick="setRating(5)">☆</span>
 
-<textarea id="feedbackText"></textarea>
-<button onclick="addFeedback()">Publicar</button>
+<textarea id="feedbackText" placeholder="Escreva seu feedback"></textarea>
+
+<button style="margin-top:10px;" onclick="addFeedback()">Publicar</button>
 </div>
 
 <div id="feedbackList"></div>
-
 </div>
 
 <div id="admin" class="hidden">
+
 <div class="title">Admin</div>
 
-<div class="card">
-<input id="newUser" placeholder="Usuário">
+<div class="card" style="background:linear-gradient(135deg,#001f2f,#003355);border:2px solid #00f0ff;box-shadow:0 0 15px #00f0ff;padding:25px;border-radius:15px;transition:0.3s;">
+
+<h3 style="font-family:'Orbitron',sans-serif;color:#00f0ff;margin-bottom:15px;text-align:center;text-shadow:0 0 8px #00f0ff;">
+Adicionar Usuários
+</h3>
+
+<input id="newUser" placeholder="Nome do usuário">
 <input id="newPass" placeholder="Senha">
 
 <select id="newRole">
@@ -284,7 +298,8 @@ margin-top:15px;
 <option value="desconhecido">Desconhecido</option>
 </select>
 
-<button onclick="adicionarUsuario()">Adicionar</button>
+<button style="width:100%" onclick="adicionarUsuario()">Adicionar</button>
+
 </div>
 
 <div id="userList"></div>
@@ -294,255 +309,5 @@ margin-top:15px;
 </div>
 </div>
 
-<script type="module">
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, query, where, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
-
-const firebaseConfig = {
-apiKey:"AIzaSyBlUuCqR78eduNnDzquWBpBgI5BP9l0ymU",
-authDomain:"nikolas-scripts-2-0.firebaseapp.com",
-projectId:"nikolas-scripts-2-0"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-let currentUser=null;
-let rating=0;
-
-async function login(){
-
-const u=user.value;
-const p=pass.value;
-
-const q=query(collection(db,"users"),where("username","==",u),where("password","==",p));
-const snap=await getDocs(q);
-
-if(!snap.empty){
-
-const d=snap.docs[0].data();
-
-currentUser={username:d.username,role:d.role};
-
-loginPage.style.display="none";
-app.style.display="block";
-
-topText.innerText=`Bem-vindo, ${currentUser.username}`;
-
-addNewsBtn.classList.toggle("hidden",currentUser.role!=="admin");
-addScriptBtn.classList.toggle("hidden",currentUser.role!=="admin");
-
-carregarNoticias();
-carregarScripts();
-carregarUsuarios();
-carregarTarefas();
-carregarFeedbacks();
-
-}else alert("Login inválido");
-
-}
-
-function logout(){
-loginPage.style.display="flex";
-app.style.display="none";
-}
-
-function show(tab){
-document.querySelectorAll(".content > div").forEach(d=>d.classList.add("hidden"));
-document.getElementById(tab).classList.remove("hidden");
-}
-
-window.login=login;
-window.logout=logout;
-window.show=show;
-
-window.copiarScript=async function(id){
-const el=document.getElementById("script-"+id);
-await navigator.clipboard.writeText(el.innerText);
-alert("Copiado!");
-};
-
-window.excluirDoc=async function(col,id){
-if(!confirm("Excluir item?"))return;
-await deleteDoc(doc(db,col,id));
-carregarNoticias();
-carregarScripts();
-carregarUsuarios();
-carregarTarefas();
-carregarFeedbacks();
-};
-
-async function carregarNoticias(){
-
-news.innerHTML="";
-
-const snap=await getDocs(collection(db,"news"));
-
-snap.forEach(docu=>{
-
-const d=docu.data();
-const id=docu.id;
-
-const card=document.createElement("div");
-card.className="card";
-
-card.innerHTML=`
-<h4>${d.title}</h4>
-<p>${d.text}</p>
-
-${currentUser.role==="admin" ? `<button onclick="excluirDoc('news','${id}')">Excluir</button>`:""}
-`;
-
-news.appendChild(card);
-
-});
-
-}
-
-async function carregarScripts(){
-
-scriptsList.innerHTML="";
-
-const snap=await getDocs(collection(db,"scripts"));
-
-snap.forEach(docu=>{
-
-const d=docu.data();
-const id=docu.id;
-
-const card=document.createElement("div");
-card.className="card";
-
-card.innerHTML=`
-
-<h4>${d.title}</h4>
-
-<div class="script-box" id="script-${id}">
-${d.code}
-</div>
-
-<div class="card-buttons">
-
-<button onclick="copiarScript('${id}')">
-Copiar
-</button>
-
-${currentUser.role==="admin" ? `
-<button onclick="excluirDoc('scripts','${id}')">
-Excluir
-</button>` : ""}
-
-</div>
-`;
-
-scriptsList.appendChild(card);
-
-});
-
-}
-
-async function carregarUsuarios(){
-
-userList.innerHTML="";
-
-const snap=await getDocs(collection(db,"users"));
-
-snap.forEach(docu=>{
-
-const d=docu.data();
-const id=docu.id;
-
-const card=document.createElement("div");
-card.className="card";
-
-card.innerHTML=`
-${d.username} (${d.role})
-
-${currentUser.role==="admin" ? `
-<button onclick="excluirDoc('users','${id}')">
-Excluir
-</button>` : ""}
-`;
-
-userList.appendChild(card);
-
-});
-
-}
-
-async function carregarTarefas(){
-
-tasksList.innerHTML="";
-
-const snap=await getDocs(collection(db,"tasks"));
-
-snap.forEach(docu=>{
-
-const d=docu.data();
-const id=docu.id;
-
-const card=document.createElement("div");
-card.className="card";
-
-card.innerHTML=`
-
-<b>${d.user}</b> - ${d.contact}
-
-<br>
-
-<small>${d.date?.toDate ? d.date.toDate().toLocaleString() : new Date(d.date).toLocaleString()}</small>
-
-${currentUser.role==="admin" ? `
-<button onclick="excluirDoc('tasks','${id}')">
-Excluir
-</button>` : ""}
-
-`;
-
-tasksList.appendChild(card);
-
-});
-
-}
-
-async function carregarFeedbacks(){
-
-feedbackList.innerHTML="";
-
-const snap=await getDocs(collection(db,"feedback"));
-
-snap.forEach(docu=>{
-
-const d=docu.data();
-const id=docu.id;
-
-const card=document.createElement("div");
-card.className="card";
-
-card.innerHTML=`
-
-${"★".repeat(d.rating)}${"☆".repeat(5-d.rating)}
-
-<br>
-
-${d.text}
-
-${currentUser.role==="admin" ? `
-<button onclick="excluirDoc('feedback','${id}')">
-Excluir
-</button>` : ""}
-
-`;
-
-feedbackList.appendChild(card);
-
-});
-
-}
-
-</script>
-
 </body>
 </html>
-```
