@@ -53,7 +53,7 @@ button:hover{transform:scale(1.05);box-shadow:0 0 15px rgba(0,240,255,0.7);}
     <a onclick="show('scripts')">Scripts</a>
     <a onclick="show('tarefas')">Tarefas</a>
     <a onclick="show('avaliacao')">Avaliação</a>
-    <a id="adminMenu" onclick="show('admin')">Admin</a>
+    <a onclick="show('admin')">Admin</a>
     <button class="logout" onclick="logout()">Sair</button>
   </div>
 
@@ -90,86 +90,336 @@ button:hover{transform:scale(1.05);box-shadow:0 0 15px rgba(0,240,255,0.7);}
       <div id="tasksList"></div>
     </div>
 
-<script type="module">
+    <div id="avaliacao" class="hidden">
+      <div class="title">Avaliação</div>
+      <div class="card" id="starsCard">
+        <span class="star" onclick="setRating(1)">☆</span>
+        <span class="star" onclick="setRating(2)">☆</span>
+        <span class="star" onclick="setRating(3)">☆</span>
+        <span class="star" onclick="setRating(4)">☆</span>
+        <span class="star" onclick="setRating(5)">☆</span>
+        <textarea id="feedbackText" placeholder="Escreva seu feedback"></textarea>
+        <button style="margin-top:10px;" onclick="addFeedback()">Publicar</button>
+      </div>
+      <div id="feedbackList"></div>
+    </div>
 
+    <div id="admin" class="hidden">
+      <div class="title">Admin</div>
+      <div class="card" style="background:linear-gradient(135deg,#001f2f,#003355);border:2px solid #00f0ff;box-shadow:0 0 15px #00f0ff;padding:25px;border-radius:15px;transition:0.3s;">
+        <h3 style="font-family:'Orbitron',sans-serif;color:#00f0ff;margin-bottom:15px;text-align:center;text-shadow:0 0 8px #00f0ff;">Adicionar Usuários</h3>
+        <input id="newUser" placeholder="Nome do usuário">
+        <input id="newPass" placeholder="Senha">
+        <select id="newRole">
+          <option value="admin">Administrador</option>
+          <option value="amigo">Amigo</option>
+          <option value="desconhecido">Desconhecido</option>
+        </select>
+        <button style="width:100%" onclick="adicionarUsuario()">Adicionar</button>
+      </div>
+      <div id="userList"></div>
+    </div>
+
+  </div>
+</div>
+
+<div id="modalPanel" class="hidden">
+  <div class="card" style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:400px;background:#000">
+    <h3 id="modalTitle" style="font-family:'Orbitron',sans-serif;color:#00f0ff;margin-bottom:15px;"></h3>
+    <input id="newsTitle" placeholder="Título novidade" class="hidden">
+    <textarea id="newsText" placeholder="Texto novidade" class="hidden"></textarea>
+    <input id="scriptTitle" placeholder="Título script" class="hidden">
+    <textarea id="scriptCode" placeholder="Código script" class="hidden"></textarea>
+    <div style="display:flex;gap:20px;">
+      <button style="flex:1" onclick="saveModal()">Salvar</button>
+      <button style="flex:1" onclick="closeModal()">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
 import { getFirestore, collection, addDoc, getDocs, query, where, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBlUuCqR78eduNnDzquWBpBgI5BP9l0ymU",
   authDomain: "nikolas-scripts-2-0.firebaseapp.com",
-  projectId: "nikolas-scripts-2-0"
+  projectId: "nikolas-scripts-2-0",
+  storageBucket: "nikolas-scripts-2-0.appspot.com",
+  messagingSenderId: "366421783041",
+  appId: "1:366421783041:web:e051573254b6d02400c600",
+  measurementId: "G-8T1VZ63BQT"
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 let currentUser = null;
+let rating = 0;
 
-async function login(){
-
-const u=document.getElementById("user").value;
-const p=document.getElementById("pass").value;
-
-const q=query(collection(db,"users"),where("username","==",u),where("password","==",p));
-const snap=await getDocs(q);
-
-if(!snap.empty){
-
-const data=snap.docs[0].data();
-currentUser={username:data.username,role:data.role};
-
-document.getElementById("loginPage").style.display="none";
-document.getElementById("app").style.display="block";
-document.getElementById("topText").innerText=`Bem-vindo, ${currentUser.username}`;
-
-updateUIByRole();
-carregarTarefas();
-
-}else alert("Usuário ou senha incorretos");
-
+async function login() {
+  const u = document.getElementById("user").value;
+  const p = document.getElementById("pass").value;
+  const q = query(collection(db,"users"), where("username","==",u), where("password","==",p));
+  const snap = await getDocs(q);
+  if(!snap.empty){
+    const docu = snap.docs[0].data();
+    currentUser = {username:docu.username, role:docu.role};
+    document.getElementById("loginPage").style.display = "none";
+    document.getElementById("app").style.display = "block";
+    document.getElementById("topText").innerText = `Bem-vindo, ${currentUser.username}`;
+    updateUIByRole();
+    carregarNoticias();
+    carregarScripts();
+    carregarUsuarios();
+    carregarTarefas();
+    carregarFeedbacks();
+  } else alert("Usuário ou senha incorretos");
 }
 
-function updateUIByRole(){
-
-document.getElementById("addNewsBtn").classList.toggle("hidden", currentUser.role !== "admin");
-document.getElementById("addScriptBtn").classList.toggle("hidden", currentUser.role !== "admin");
-
-if(currentUser.role !== "admin"){
-document.getElementById("adminMenu").style.display="none";
+function logout() {
+  currentUser = null;
+  document.getElementById("loginPage").style.display = "flex";
+  document.getElementById("app").style.display = "none";
 }
 
+function show(tab){
+  document.querySelectorAll(".content > div").forEach(d => d.classList.add("hidden"));
+  document.getElementById(tab).classList.remove("hidden");
 }
 
+function updateUIByRole() {
+  document.getElementById("addNewsBtn").classList.toggle("hidden", currentUser.role !== "admin");
+  document.getElementById("addScriptBtn").classList.toggle("hidden", currentUser.role !== "admin");
+  document.querySelectorAll("#admin").forEach(el => el.classList.toggle("hidden", currentUser.role !== "admin"));
+}
+
+// Modal
+let modalType = "";
+function showModal(type){
+  modalType = type;
+  document.getElementById("modalPanel").classList.remove("hidden");
+  document.getElementById("newsTitle").classList.add("hidden");
+  document.getElementById("newsText").classList.add("hidden");
+  document.getElementById("scriptTitle").classList.add("hidden");
+  document.getElementById("scriptCode").classList.add("hidden");
+  document.getElementById("modalTitle").innerText = type === "news" ? "Nova Notícia" : "Novo Script";
+  if(type==="news"){ document.getElementById("newsTitle").classList.remove("hidden"); document.getElementById("newsText").classList.remove("hidden"); }
+  if(type==="script"){ document.getElementById("scriptTitle").classList.remove("hidden"); document.getElementById("scriptCode").classList.remove("hidden"); }
+}
+function closeModal(){ document.getElementById("modalPanel").classList.add("hidden"); }
+
+async function saveModal(){
+  if(modalType==="news"){
+    const t=document.getElementById("newsTitle").value;
+    const txt=document.getElementById("newsText").value;
+    if(t && txt){ await addDoc(collection(db,"news"),{title:t,text:txt,date:new Date()}); carregarNoticias(); closeModal(); }
+  } else if(modalType==="script"){
+    const t=document.getElementById("scriptTitle").value;
+    const c=document.getElementById("scriptCode").value;
+    if(t && c){ await addDoc(collection(db,"scripts"),{title:t,code:c}); carregarScripts(); closeModal(); }
+  }
+}
+
+// Expor funções para HTML
+window.login = login;
+window.logout = logout;
+window.show = show;
+window.showModal = showModal;
+window.closeModal = closeModal;
+window.saveModal = saveModal;
+
+window.adicionarUsuario = async function() {
+  const u=document.getElementById("newUser").value;
+  const p=document.getElementById("newPass").value;
+  const r=document.getElementById("newRole").value;
+  if(u && p){ await addDoc(collection(db,"users"),{username:u,password:p,role:r}); carregarUsuarios(); }
+};
+
+window.enviarTarefa = async function(){
+  const tUser=document.getElementById("tUser").value;
+  const tPass=document.getElementById("tPass").value;
+  const tContato=document.getElementById("tContato").value;
+  if(tUser && tPass && tContato){ await addDoc(collection(db,"tasks"),{user:tUser,pass:tPass,contact:tContato,date:new Date()}); carregarTarefas(); }
+};
+
+window.setRating = function(val){ rating=val; document.querySelectorAll("#starsCard .star").forEach((s,i)=>{ s.innerText=i<val?"★":"☆"; }); };
+
+window.addFeedback = async function(){ 
+  const txt=document.getElementById("feedbackText").value;
+  if(txt && rating>0){ await addDoc(collection(db,"feedback"),{rating:rating,text:txt,date:new Date()}); carregarFeedbacks(); document.getElementById("feedbackText").value=""; setRating(0); }
+};
+
+window.excluirDoc = async function(collectionName,id){
+
+  if(currentUser.role !== "admin") return;
+
+  if(confirm("Tem certeza que deseja excluir?")){
+
+    await deleteDoc(doc(db, collectionName, id));
+
+    if(collectionName==="news") carregarNoticias();
+    if(collectionName==="scripts") carregarScripts();
+    if(collectionName==="users") carregarUsuarios();
+    if(collectionName==="tasks") carregarTarefas();
+    if(collectionName==="feedback") carregarFeedbacks();
+
+  }
+
+};
+
+// Carregar conteúdo
+async function carregarNoticias(){
+
+  const newsDiv=document.getElementById("news");
+  newsDiv.innerHTML="";
+
+  const snap=await getDocs(collection(db,"news"));
+
+  snap.forEach(docu=>{
+
+    const d=docu.data();
+    const id=docu.id;
+
+    const card=document.createElement("div");
+    card.className="card";
+
+    card.innerHTML=`
+      <h4>${d.title}</h4>
+      <p>${d.text}</p>
+
+      ${currentUser.role==="admin" ? `
+      <div class="card-buttons">
+        <button onclick="excluirDoc('news','${id}')">Excluir</button>
+      </div>` : ""}
+    `;
+
+    newsDiv.appendChild(card);
+
+  });
+
+}
+async function carregarScripts(){
+
+  const scriptsDiv=document.getElementById("scriptsList");
+  scriptsDiv.innerHTML="";
+
+  const snap=await getDocs(collection(db,"scripts"));
+
+  snap.forEach(docu=>{
+
+    const d=docu.data();
+    const id=docu.id;
+
+    const card=document.createElement("div");
+    card.className="card";
+
+    card.innerHTML=`
+      <h4>${d.title}</h4>
+      <pre>${d.code}</pre>
+
+      ${currentUser.role==="admin" ? `
+      <div class="card-buttons">
+        <button onclick="excluirDoc('scripts','${id}')">Excluir</button>
+      </div>` : ""}
+    `;
+
+    scriptsDiv.appendChild(card);
+
+  });
+
+}
+async function carregarUsuarios(){
+
+  const ul=document.getElementById("userList");
+  ul.innerHTML="";
+
+  const snap=await getDocs(collection(db,"users"));
+
+  snap.forEach(docu=>{
+
+    const d=docu.data();
+    const id=docu.id;
+
+    const card=document.createElement("div");
+    card.className="card";
+
+    card.innerHTML=`
+      ${d.username} (${d.role})
+
+      ${currentUser.role==="admin" ? `
+      <div class="card-buttons">
+        <button onclick="excluirDoc('users','${id}')">Excluir</button>
+      </div>` : ""}
+    `;
+
+    ul.appendChild(card);
+
+  });
+
+}
 async function carregarTarefas(){
 
-const tasksDiv=document.getElementById("tasksList");
-tasksDiv.innerHTML="";
+  const tasksDiv=document.getElementById("tasksList");
+  tasksDiv.innerHTML="";
 
-if(currentUser.role !== "admin") return;
+  const snap=await getDocs(collection(db,"tasks"));
 
-const snap=await getDocs(collection(db,"tasks"));
+  snap.forEach(docu=>{
 
-snap.forEach(docu=>{
+    const d=docu.data();
+    const id=docu.id;
 
-const d=docu.data();
+    const card=document.createElement("div");
+    card.className="card";
 
-const card=document.createElement("div");
-card.className="card";
+    card.innerHTML=`
+      <b>${d.user}</b> - ${d.contact}
+      <br>
+      <small>${d.date.toDate().toLocaleString()}</small>
 
-card.innerHTML=`
-<b>${d.user}</b> - ${d.contact}
-<br>
-${d.date.toDate().toLocaleString()}
-`;
+      ${currentUser.role==="admin" ? `
+      <div class="card-buttons">
+        <button onclick="excluirDoc('tasks','${id}')">Excluir</button>
+      </div>` : ""}
+    `;
 
-tasksDiv.appendChild(card);
+    tasksDiv.appendChild(card);
 
-});
+  });
 
 }
+async function carregarFeedbacks(){
 
-window.login=login;
+  const fDiv=document.getElementById("feedbackList");
+  fDiv.innerHTML="";
+
+  const snap=await getDocs(collection(db,"feedback"));
+
+  snap.forEach(docu=>{
+
+    const d=docu.data();
+    const id=docu.id;
+
+    const card=document.createElement("div");
+    card.className="card";
+
+    card.innerHTML=`
+      ${"★".repeat(d.rating)}${"☆".repeat(5-d.rating)}
+      <br>
+      ${d.text}
+
+      ${currentUser.role==="admin" ? `
+      <div class="card-buttons">
+        <button onclick="excluirDoc('feedback','${id}')">Excluir</button>
+      </div>` : ""}
+    `;
+
+    fDiv.appendChild(card);
+
+  });
+
+}
 
 </script>
 </body>
